@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UCOMPENSAR NetConfig Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #1c2333;
+  --bg4: #21262d;
+  --border: #30363d;
+  --border2: #3d444d;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #656d76;
+  --accent: #00d4aa;
+  --accent2: #00a896;
+  --accent3: rgba(0,212,170,0.1);
+  --blue: #58a6ff;
+  --blue2: #388bfd;
+  --purple: #bc8cff;
+  --orange: #f0883e;
+  --red: #ff7b72;
+  --yellow: #e3b341;
+  --green: #3fb950;
+  --radius: 10px;
+  --radius2: 6px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow2: 0 2px 8px rgba(0,0,0,0.3);
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── SCROLLBARS ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text3);}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;gap:0;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  height:56px;
+  flex-shrink:0;
+  position:relative;
+  z-index:100;
+}
+
+.topbar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px;
+  border-right:1px solid var(--border);
+  height:100%;
+  min-width:220px;
+}
+.logo-badge{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,var(--accent),var(--blue));
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.logo-text{font-size:13px;font-weight:700;color:var(--text);line-height:1.2;}
+.logo-sub{font-size:10px;color:var(--accent);font-family:var(--mono);letter-spacing:1px;}
+
+.topbar-tabs{
+  display:flex;align-items:stretch;
+  height:100%;flex:1;
+  overflow-x:auto;
+}
+.tab-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;
+  border:none;background:none;
+  color:var(--text2);
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:var(--transition);
+  white-space:nowrap;
+  position:relative;
+}
+.tab-btn:hover{color:var(--text);background:var(--bg3);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-badge{
+  background:var(--accent3);color:var(--accent);
+  font-size:10px;font-weight:700;
+  padding:2px 6px;border-radius:10px;
+  font-family:var(--mono);
+}
+.tab-badge.warn{background:rgba(240,136,62,0.15);color:var(--orange);}
+.tab-badge.ok{background:rgba(63,185,80,0.15);color:var(--green);}
+
+.topbar-actions{
+  display:flex;align-items:center;gap:8px;
+  padding:0 16px;
+  border-left:1px solid var(--border);
+  height:100%;
+  flex-shrink:0;
+}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;
+  border-radius:var(--radius2);
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  cursor:pointer;border:none;
+  transition:var(--transition);
+  white-space:nowrap;
+  text-decoration:none;
+}
+.btn-accent{background:var(--accent);color:#0d1117;}
+.btn-accent:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,212,170,0.3);}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2);}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2);}
+.btn-danger{background:rgba(255,123,114,0.15);color:var(--red);border:1px solid rgba(255,123,114,0.3);}
+.btn-danger:hover{background:rgba(255,123,114,0.25);}
+.btn-blue{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.3);}
+.btn-blue:hover{background:rgba(88,166,255,0.25);}
+.btn-sm{padding:5px 10px;font-size:12px;}
+.btn-icon{padding:7px;border-radius:var(--radius2);background:transparent;color:var(--text2);border:1px solid var(--border);cursor:pointer;transition:var(--transition);font-size:14px;}
+.btn-icon:hover{background:var(--bg3);color:var(--text);}
+
+/* ── LAYOUT ── */
+.app-body{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  padding:16px 12px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:width 0.3s ease;
+}
+.sidebar.collapsed{width:56px;padding:16px 8px;}
+.sidebar.collapsed .sidebar-label,
+.sidebar.collapsed .sidebar-section-title,
+.sidebar.collapsed .sidebar-text{display:none;}
+
+.sidebar-section-title{
+  font-size:10px;font-weight:700;
+  color:var(--text3);
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:8px 8px 4px;
+}
+
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;
+  border-radius:var(--radius2);
+  cursor:pointer;
+  transition:var(--transition);
+  color:var(--text2);
+  font-size:13px;font-weight:500;
+  border:1px solid transparent;
+  position:relative;
+}
+.sidebar-item:hover{background:var(--bg3);color:var(--text);}
+.sidebar-item.active{
+  background:var(--accent3);
+  color:var(--accent);
+  border-color:rgba(0,212,170,0.2);
+}
+.sidebar-item .item-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center;}
+.sidebar-label{flex:1;}
+.sidebar-count{
+  background:var(--bg4);
+  color:var(--text3);
+  font-size:10px;font-weight:700;
+  padding:2px 6px;border-radius:8px;
+  font-family:var(--mono);
+}
+.sidebar-item.active .sidebar-count{background:rgba(0,212,170,0.2);color:var(--accent);}
+
+.sidebar-divider{height:1px;background:var(--border);margin:4px 0;}
+
+/* ── MAIN CONTENT ── */
+.main-content{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  background:var(--bg);
+}
+
+.content-panel{display:none;animation:fadeIn 0.25s ease;}
+.content-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px 0;
+  margin-bottom:20px;
+}
+.panel-title{font-size:22px;font-weight:700;color:var(--text);}
+.panel-subtitle{font-size:13px;color:var(--text2);margin-top:3px;}
+.panel-actions{display:flex;gap:8px;align-items:center;}
+
+.content-area{padding:0 28px 28px;}
+
+/* ── CARDS ── */
+.grid{display:grid;gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-auto{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+.col-span-2{grid-column:span 2;}
+.col-span-3{grid-column:span 3;}
+
+.card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:var(--transition);
+}
+.card:hover{border-color:var(--border2);}
+.card-header{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg3);
+}
+.card-icon{
+  width:36px;height:36px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.card-icon.cyan{background:rgba(0,212,170,0.15);}
+.card-icon.blue{background:rgba(88,166,255,0.15);}
+.card-icon.purple{background:rgba(188,140,255,0.15);}
+.card-icon.orange{background:rgba(240,136,62,0.15);}
+.card-icon.red{background:rgba(255,123,114,0.15);}
+.card-icon.green{background:rgba(63,185,80,0.15);}
+.card-title{font-size:14px;font-weight:700;color:var(--text);}
+.card-subtitle{font-size:12px;color:var(--text2);margin-top:1px;}
+.card-body{padding:20px;}
+.card-actions{margin-left:auto;display:flex;gap:6px;}
+
+/* ── STAT CARDS ── */
+.stat-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:var(--transition);
+  cursor:default;
+}
+.stat-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow2);}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+.stat-value{font-size:28px;font-weight:700;font-family:var(--mono);color:var(--text);}
+.stat-value.accent{color:var(--accent);}
+.stat-value.blue{color:var(--blue);}
+.stat-value.purple{color:var(--purple);}
+.stat-value.orange{color:var(--orange);}
+.stat-sub{font-size:12px;color:var(--text2);}
+.stat-trend{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;}
+.stat-trend.up{color:var(--green);}
+.stat-trend.down{color:var(--red);}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:14px;}
+.form-row{display:grid;gap:12px;grid-template-columns:1fr 1fr;}
+.form-row-3{display:grid;gap:12px;grid-template-columns:1fr 1fr 1fr;}
+label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;letter-spacing:0.3px;}
+.label-required::after{content:" *";color:var(--red);}
+
+input[type=text],input[type=number],input[type=email],input[type=password],select,textarea{
+  width:100%;padding:9px 12px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius2);
+  color:var(--text);font-family:var(--sans);font-size:13px;
+  transition:var(--transition);
+  outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,170,0.1);}
+input:hover,select:hover{border-color:var(--border2);}
+input[type=password]{font-family:var(--mono);}
+select option{background:var(--bg2);}
+textarea{resize:vertical;min-height:80px;}
+.input-group{display:flex;gap:0;}
+.input-group input{border-radius:var(--radius2) 0 0 var(--radius2);}
+.input-group .btn{border-radius:0 var(--radius2) var(--radius2) 0;flex-shrink:0;}
+.input-hint{font-size:11px;color:var(--text3);margin-top:4px;}
+.input-valid{border-color:var(--green)!important;}
+.input-error{border-color:var(--red)!important;}
+
+/* ── TABLES ── */
+.table-wrap{overflow-x:auto;border-radius:var(--radius2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{
+  background:var(--bg3);color:var(--text2);
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;
+  padding:10px 14px;text-align:left;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+tbody tr:hover{background:var(--bg3);}
+tbody tr:last-child td{border-bottom:none;}
+
+/* ── BADGES ── */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:10px;
+  font-size:11px;font-weight:700;
+  font-family:var(--mono);
+}
+.badge-cyan{background:rgba(0,212,170,0.15);color:var(--accent);}
+.badge-blue{background:rgba(88,166,255,0.15);color:var(--blue);}
+.badge-purple{background:rgba(188,140,255,0.15);color:var(--purple);}
+.badge-orange{background:rgba(240,136,62,0.15);color:var(--orange);}
+.badge-red{background:rgba(255,123,114,0.15);color:var(--red);}
+.badge-green{background:rgba(63,185,80,0.15);color:var(--green);}
+.badge-gray{background:var(--bg4);color:var(--text2);}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;}
+.dot-green{background:var(--green);}
+.dot-orange{background:var(--orange);}
+.dot-red{background:var(--red);}
+.dot-gray{background:var(--text3);}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:3px;transition:width 0.6s ease;}
+.progress-cyan{background:linear-gradient(90deg,var(--accent),var(--blue));}
+.progress-orange{background:var(--orange);}
+.progress-red{background:var(--red);}
+
+/* ── CODE BLOCK ── */
+.code-wrap{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  font-family:var(--mono);
+}
+.code-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:var(--bg3);border-bottom:1px solid var(--border);
+}
+.code-lang{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:1px;}
+.code-actions{display:flex;gap:6px;}
+.code-body{
+  padding:16px;overflow-x:auto;
+  font-size:12.5px;line-height:1.7;
+  color:var(--text2);
+  max-height:400px;overflow-y:auto;
+}
+.code-line{white-space:pre;}
+.code-comment{color:var(--text3);}
+.code-keyword{color:var(--blue);}
+.code-value{color:var(--accent);}
+.code-string{color:var(--orange);}
+.code-section{color:var(--purple);font-weight:700;}
+
+/* ── ALERTS ── */
+.alert{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 16px;border-radius:var(--radius2);
+  font-size:13px;margin-bottom:16px;
+  border:1px solid;
+}
+.alert-info{background:rgba(88,166,255,0.08);border-color:rgba(88,166,255,0.25);color:var(--blue);}
+.alert-warn{background:rgba(227,179,65,0.08);border-color:rgba(227,179,65,0.25);color:var(--yellow);}
+.alert-success{background:rgba(63,185,80,0.08);border-color:rgba(63,185,80,0.25);color:var(--green);}
+.alert-error{background:rgba(255,123,114,0.08);border-color:rgba(255,123,114,0.25);color:var(--red);}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+/* ── TAGS ── */
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:20px;
+  font-size:12px;font-weight:600;
+  background:var(--bg4);color:var(--text2);
+  border:1px solid var(--border);
+  cursor:pointer;transition:var(--transition);
+}
+.tag:hover,.tag.active{background:var(--accent3);color:var(--accent);border-color:rgba(0,212,170,0.3);}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* ── DEVICE SELECTOR ── */
+.device-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.device-card{
+  padding:14px 10px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);
+  cursor:pointer;text-align:center;
+  transition:var(--transition);
+}
+.device-card:hover{border-color:var(--border2);background:var(--bg4);}
+.device-card.active{border-color:var(--accent);background:rgba(0,212,170,0.08);}
+.device-card .d-icon{font-size:22px;margin-bottom:6px;}
+.device-card .d-name{font-size:11px;font-weight:700;color:var(--text2);}
+.device-card.active .d-name{color:var(--accent);}
+
+.vendor-list{display:flex;flex-direction:column;gap:6px;}
+.vendor-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius2);cursor:pointer;
+  transition:var(--transition);
+}
+.vendor-item:hover{border-color:var(--border2);background:var(--bg4);}
+.vendor-item.active{border-color:var(--accent);background:rgba(0,212,170,0.08);}
+.vendor-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.vendor-name{font-size:13px;font-weight:600;color:var(--text2);}
+.vendor-item.active .vendor-name{color:var(--accent);}
+.vendor-model{font-size:10px;color:var(--text3);margin-left:auto;font-family:var(--mono);}
+
+/* ── TOPOLOGY CANVAS ── */
+#topo-canvas{
+  width:100%;height:380px;
+  background:var(--bg);
+  border-radius:var(--radius2);
+  position:relative;overflow:hidden;
+  background-image:
+    linear-gradient(rgba(48,54,61,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(48,54,61,0.3) 1px, transparent 1px);
+  background-size:30px 30px;
+}
+.topo-node{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;
+  transition:transform 0.2s;
+  z-index:2;
+}
+.topo-node:hover{transform:scale(1.1);}
+.topo-box{
+  width:52px;height:52px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  border:2px solid;
+  position:relative;
+  transition:var(--transition);
+}
+.topo-box::after{
+  content:'';position:absolute;
+  width:8px;height:8px;border-radius:50%;
+  bottom:-2px;right:-2px;border:2px solid var(--bg);
+}
+.topo-box.online::after{background:var(--green);}
+.topo-box.offline::after{background:var(--red);}
+.topo-box.warn::after{background:var(--orange);}
+.topo-label{font-size:10px;font-weight:700;color:var(--text2);text-align:center;font-family:var(--mono);}
+.topo-sublabel{font-size:9px;color:var(--text3);text-align:center;}
+
+svg.topo-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.topo-line{stroke-width:1.5;fill:none;stroke-dasharray:4 4;animation:dash 15s linear infinite;}
+@keyframes dash{to{stroke-dashoffset:-100;}}
+.topo-line-solid{stroke-width:2;fill:none;}
+
+/* ── SEDE ROW ── */
+.sede-row{
+  display:grid;grid-template-columns:1fr 120px 120px auto;
+  gap:10px;align-items:end;
+  padding:14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);
+  transition:var(--transition);
+}
+.sede-row:hover{border-color:var(--border2);}
+
+/* ── VLAN TABLE EDITABLE ── */
+.vlan-row td{padding:8px 14px;}
+.vlan-row input{
+  background:transparent;border:none;
+  color:var(--text);font-size:13px;
+  font-family:var(--mono);
+  padding:4px;border-radius:4px;
+  width:100%;
+}
+.vlan-row input:focus{background:var(--bg4);border:1px solid var(--accent);}
+.vlan-row td:first-child{font-family:var(--mono);}
+
+/* ── IP CALCULATOR ── */
+.ip-calc-result{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.ip-calc-item{display:flex;flex-direction:column;gap:3px;}
+.ip-calc-label{font-size:11px;color:var(--text3);font-weight:600;}
+.ip-calc-value{font-family:var(--mono);font-size:13px;color:var(--accent);}
+
+/* ── STATUS PANEL ── */
+.status-list{display:flex;flex-direction:column;gap:8px;}
+.status-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius2);
+}
+.status-icon{font-size:16px;flex-shrink:0;}
+.status-info{flex:1;}
+.status-name{font-size:13px;font-weight:600;color:var(--text);}
+.status-detail{font-size:11px;color:var(--text2);margin-top:2px;}
+.status-badge{flex-shrink:0;}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.timeline-item{display:flex;gap:12px;padding-bottom:16px;position:relative;}
+.timeline-item::before{
+  content:'';position:absolute;left:11px;top:24px;
+  width:2px;height:calc(100% - 16px);
+  background:var(--border);
+}
+.timeline-item:last-child::before{display:none;}
+.timeline-dot{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+  border:2px solid;z-index:1;
+}
+.timeline-dot.done{background:rgba(63,185,80,0.15);border-color:var(--green);}
+.timeline-dot.active{background:rgba(0,212,170,0.15);border-color:var(--accent);}
+.timeline-dot.pending{background:var(--bg3);border-color:var(--border);}
+.timeline-content{flex:1;padding-top:2px;}
+.timeline-title{font-size:13px;font-weight:600;color:var(--text);}
+.timeline-desc{font-size:12px;color:var(--text2);margin-top:2px;}
+.timeline-time{font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);
+  z-index:1000;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;
+  width:90%;max-width:560px;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:var(--shadow);
+  animation:slideUp 0.25s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;
+  border-bottom:1px solid var(--border);
+}
+.modal-title{font-size:16px;font-weight:700;color:var(--text);}
+.modal-close{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;transition:var(--transition);}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:24px;}
+.modal-footer{
+  padding:16px 24px;border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;
+}
+
+/* ── TOAST NOTIFICATIONS ── */
+#toast-container{
+  position:fixed;bottom:24px;right:24px;
+  display:flex;flex-direction:column;gap:8px;
+  z-index:9999;
+}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  font-size:13px;color:var(--text);
+  animation:toastIn 0.3s ease;
+  min-width:280px;max-width:400px;
+}
+@keyframes toastIn{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.toast.removing{animation:toastOut 0.3s ease forwards;}
+@keyframes toastOut{to{transform:translateX(100%);opacity:0;}}
+.toast-icon{font-size:16px;flex-shrink:0;}
+.toast-text{flex:1;}
+.toast-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;flex-shrink:0;}
+.toast.success .toast-icon{color:var(--green);}
+.toast.error .toast-icon{color:var(--red);}
+.toast.info .toast-icon{color:var(--blue);}
+.toast.warn .toast-icon{color:var(--yellow);}
+.toast-bar{height:3px;background:var(--accent);position:absolute;bottom:0;left:0;border-radius:0 0 var(--radius) var(--radius);animation:toastBar 3s linear forwards;}
+@keyframes toastBar{from{width:100%;}to{width:0%;}}
+
+/* ── QOS CHART ── */
+.qos-bars{display:flex;flex-direction:column;gap:10px;}
+.qos-item{display:flex;align-items:center;gap:12px;}
+.qos-label{font-size:12px;color:var(--text2);width:100px;flex-shrink:0;}
+.qos-bar-wrap{flex:1;height:20px;background:var(--bg4);border-radius:4px;overflow:hidden;position:relative;}
+.qos-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);transition:width 0.8s ease;}
+.qos-pct{font-size:12px;color:var(--text2);width:36px;text-align:right;font-family:var(--mono);}
+
+/* ── WIZARD ── */
+.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:24px;}
+.wizard-step{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;flex:1;
+  position:relative;
+}
+.wizard-step:not(:last-child)::after{
+  content:'&#x203A;';
+  position:absolute;right:-8px;
+  color:var(--text3);font-size:18px;z-index:1;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;
+  background:var(--bg4);color:var(--text3);
+  border:2px solid var(--border);
+  flex-shrink:0;transition:var(--transition);
+}
+.wizard-step.done .step-num{background:rgba(63,185,80,0.2);color:var(--green);border-color:var(--green);}
+.wizard-step.active .step-num{background:rgba(0,212,170,0.2);color:var(--accent);border-color:var(--accent);}
+.step-label{font-size:12px;font-weight:600;color:var(--text3);}
+.wizard-step.done .step-label,.wizard-step.active .step-label{color:var(--text);}
+
+/* ── SEGMENTED CONTROL ── */
+.seg-control{
+  display:inline-flex;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:3px;gap:2px;
+}
+.seg-btn{
+  padding:5px 14px;border-radius:4px;
+  background:none;border:none;
+  color:var(--text2);font-size:12px;font-weight:600;
+  cursor:pointer;transition:var(--transition);
+  font-family:var(--sans);
+}
+.seg-btn.active{background:var(--bg2);color:var(--text);box-shadow:var(--shadow2);}
+
+/* ── ACCORDION ── */
+.accordion{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.accordion-item{border-bottom:1px solid var(--border);}
+.accordion-item:last-child{border-bottom:none;}
+.accordion-trigger{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:var(--bg2);border:none;
+  color:var(--text);font-size:14px;font-weight:600;
+  cursor:pointer;transition:var(--transition);font-family:var(--sans);text-align:left;
+}
+.accordion-trigger:hover{background:var(--bg3);}
+.accordion-arrow{transition:transform 0.2s;color:var(--text3);font-size:12px;}
+.accordion-body{display:none;padding:16px 20px;background:var(--bg);border-top:1px solid var(--border);}
+.accordion-item.open .accordion-arrow{transform:rotate(90deg);}
+.accordion-item.open .accordion-body{display:block;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){.grid-3{grid-template-columns:1fr 1fr;}.col-span-3{grid-column:span 2;}}
+@media(max-width:768px){
+  .sidebar{width:48px;}.sidebar .sidebar-label,.sidebar .sidebar-section-title{display:none;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .col-span-2,.col-span-3{grid-column:span 1;}
+  .panel-header{flex-direction:column;align-items:flex-start;gap:12px;}
+  .form-row,.form-row-3{grid-template-columns:1fr;}
+}
+
+/* ── SPECIFIC VLAN COLORS ── */
+.vlan-20{border-left:3px solid var(--blue);}
+.vlan-30{border-left:3px solid var(--green);}
+.vlan-40{border-left:3px solid var(--orange);}
+.vlan-50{border-left:3px solid var(--purple);}
+.vlan-60{border-left:3px solid var(--text3);}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <div class="logo-badge">&#x1F310;</div>
+    <div>
+      <div class="logo-text">NetConfig Pro</div>
+      <div class="logo-sub">UCOMPENSAR</div>
+    </div>
+  </div>
+  <nav class="topbar-tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard',this)">
+      <span>&#x2B1B;</span> Dashboard <span class="tab-badge ok">Live</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('ip-planning',this)">
+      <span>&#x1F4CA;</span> IP Planning <span class="tab-badge" id="tab-badge-ip">4 sedes</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('topology',this)">
+      <span>&#x1F5FA;</span> Topología
+    </button>
+    <button class="tab-btn" onclick="switchTab('devices',this)">
+      <span>&#x2699;</span> Dispositivos <span class="tab-badge warn" id="tab-badge-dev">CLI</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('security',this)">
+      <span>&#x1F6E1;</span> Seguridad
+    </button>
+    <button class="tab-btn" onclick="switchTab('reports',this)">
+      <span>&#x1F4CB;</span> Reportes
+    </button>
+  </nav>
+  <div class="topbar-actions">
+    <button class="btn-icon" title="Guardar proyecto" onclick="saveProject()">&#x1F4BE;</button>
+    <button class="btn-icon" title="Importar" onclick="importProject()">&#x1F4C2;</button>
+    <button class="btn btn-accent btn-sm" onclick="exportProject()">&#x2B07; Exportar</button>
+  </div>
+</header>
+
+<!-- ══ APP BODY ══ -->
+<div class="app-body">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section-title">Navegación</div>
+
+    <div class="sidebar-item active" onclick="switchTab('dashboard',null,this)">
+      <span class="item-icon">&#x2B1B;</span>
+      <span class="sidebar-label">Dashboard</span>
+    </div>
+    <div class="sidebar-item" onclick="switchTab('ip-planning',null,this)">
+      <span class="item-icon">&#x1F4CA;</span>
+      <span class="sidebar-label">IP Planning</span>
+      <span class="sidebar-count" id="sb-count-ip">4</span>
+    </div>
+    <div class="sidebar-item" onclick="switchTab('topology',null,this)">
+      <span class="item-icon">&#x1F5FA;</span>
+      <span class="sidebar-label">Topología</span>
+    </div>
+    <div class="sidebar-item" onclick="switchTab('devices',null,this)">
+      <span class="item-icon">&#x2699;</span>
+      <span class="sidebar-label">Dispositivos</span>
+    </div>
+    <div class="sidebar-item" onclick="switchTab('security',null,this)">
+      <span class="item-icon">&#x1F6E1;</span>
+      <span class="sidebar-label">Seguridad</span>
+    </div>
+    <div class="sidebar-item" onclick="switchTab('reports',null,this)">
+      <span class="item-icon">&#x1F4CB;</span>
+      <span class="sidebar-label">Reportes</span>
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-title">Estado de Sedes</div>
+
+    <div class="sidebar-item" id="sb-sede1" onclick="abrirNodo('sede1')">
+      <span class="item-icon"><span class="dot dot-orange"></span></span>
+      <span class="sidebar-label">Sede 1</span>
+      <span class="sidebar-count" style="color:var(--orange);">&#x26A0;</span>
+    </div>
+    <div class="sidebar-item" id="sb-sede2" onclick="abrirNodo('sede2')">
+      <span class="item-icon"><span class="dot dot-green"></span></span>
+      <span class="sidebar-label">Sede 2</span>
+      <span class="sidebar-count">OK</span>
+    </div>
+    <div class="sidebar-item" id="sb-sede3" onclick="abrirNodo('sede3')">
+      <span class="item-icon"><span class="dot dot-green"></span></span>
+      <span class="sidebar-label">Sede 3</span>
+      <span class="sidebar-count">OK</span>
+    </div>
+    <div class="sidebar-item" id="sb-sede4" onclick="abrirNodo('sede4')">
+      <span class="item-icon"><span class="dot dot-green"></span></span>
+      <span class="sidebar-label">Sede 4</span>
+      <span class="sidebar-count">OK</span>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main-content">
+
+    <!-- ██ DASHBOARD ██ -->
+    <div class="content-panel active" id="panel-dashboard">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Dashboard de Red</div>
+          <div class="panel-subtitle">Estado general del proyecto SD-WAN · UCOMPENSAR</div>
+        </div>
+        <div class="panel-actions">
+          <div class="seg-control">
+            <button class="seg-btn active">En vivo</button>
+            <button class="seg-btn">24h</button>
+            <button class="seg-btn">7d</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="refreshDashboard()">&#x21BA; Actualizar</button>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <!-- Stats -->
+        <div class="grid grid-3" style="margin-bottom:20px;">
+          <div class="stat-card">
+            <div class="stat-label">Total Usuarios</div>
+            <div class="stat-value accent" id="dash-total-users">2,280</div>
+            <div class="stat-sub">en 4 sedes activas</div>
+            <div class="stat-trend up">&#x2191; +240 este mes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Dispositivos</div>
+            <div class="stat-value blue">20</div>
+            <div class="stat-sub">4R · 8SW · 4AP · 2FW · 2SRV</div>
+            <div class="stat-trend up">&#x2191; 18 online</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">VLANs Activas</div>
+            <div class="stat-value purple">5</div>
+            <div class="stat-sub">Datos, Voz, CCTV, Gestión, Invitados</div>
+            <div class="stat-trend up">&#x2713; Todas operativas</div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:20px;">
+          <!-- Estado de Sedes -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon cyan">&#x1F3E2;</div>
+              <div><div class="card-title">Estado de Sedes</div><div class="card-subtitle">Conectividad y carga</div></div>
+            </div>
+            <div class="card-body">
+              <div class="status-list">
+                <div class="status-item">
+                  <div class="status-icon">&#x1F7E2;</div>
+                  <div class="status-info">
+                    <div class="status-name">Sede 1-A — Hub Principal</div>
+                    <div class="status-detail">530 usuarios · 10.1.20.0/24 · Latencia 2ms</div>
+                    <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-cyan" style="width:68%"></div></div>
+                  </div>
+                  <div class="status-badge"><span class="badge badge-green">Online</span></div>
+                </div>
+                <div class="status-item">
+                  <div class="status-icon">&#x1F7E1;</div>
+                  <div class="status-info">
+                    <div class="status-name">Sede 1-B — Rama</div>
+                    <div class="status-detail">300 usuarios · 10.2.20.0/24 · Latencia 18ms</div>
+                    <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-orange" style="width:42%"></div></div>
+                  </div>
+                  <div class="status-badge"><span class="badge badge-orange">Degradado</span></div>
+                </div>
+                <div class="status-item">
+                  <div class="status-icon">&#x1F7E2;</div>
+                  <div class="status-info">
+                    <div class="status-name">Sede 2 — Hub Secundario</div>
+                    <div class="status-detail">1240 usuarios · 10.3.20.0/24 · Latencia 3ms</div>
+                    <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-cyan" style="width:89%"></div></div>
+                  </div>
+                  <div class="status-badge"><span class="badge badge-green">Online</span></div>
+                </div>
+                <div class="status-item">
+                  <div class="status-icon">&#x1F7E2;</div>
+                  <div class="status-info">
+                    <div class="status-name">Sede 3 — Rama</div>
+                    <div class="status-detail">210 usuarios · 10.4.20.0/24 · Latencia 5ms</div>
+                    <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-cyan" style="width:31%"></div></div>
+                  </div>
+                  <div class="status-badge"><span class="badge badge-green">Online</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progreso del Proyecto -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon blue">&#x1F4CB;</div>
+              <div><div class="card-title">Progreso del Proyecto</div><div class="card-subtitle">Implementación SD-WAN</div></div>
+            </div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot done">&#x2713;</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">IP Planning completado</div>
+                    <div class="timeline-desc">4 sedes, 5 VLANs, 4 políticas QoS definidas</div>
+                    <div class="timeline-time">Hace 2 días</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot done">&#x2713;</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Infraestructura diseñada</div>
+                    <div class="timeline-desc">20 dispositivos catalogados y configurados</div>
+                    <div class="timeline-time">Ayer</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot active">&#x25C9;</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Configuración de dispositivos</div>
+                    <div class="timeline-desc">CLI generada para Cisco, Fortinet, Juniper</div>
+                    <div class="timeline-time">En progreso</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot pending">&#x25CB;</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Pruebas y validación</div>
+                    <div class="timeline-desc">Ping, traceroute, QoS testing</div>
+                    <div class="timeline-time">Pendiente</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot pending">&#x25CB;</div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Documentación final</div>
+                    <div class="timeline-desc">Runbook, reportes ejecutivos y técnicos</div>
+                    <div class="timeline-time">Pendiente</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QoS y alertas -->
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon orange">&#x26A1;</div>
+              <div><div class="card-title">Distribución QoS</div><div class="card-subtitle">Ancho de banda por clase</div></div>
+            </div>
+            <div class="card-body">
+              <div class="qos-bars">
+                <div class="qos-item">
+                  <div class="qos-label">Voz (EF·46)</div>
+                  <div class="qos-bar-wrap"><div class="qos-fill" style="width:15%;background:var(--red);">15%</div></div>
+                  <div class="qos-pct">15%</div>
+                </div>
+                <div class="qos-item">
+                  <div class="qos-label">CCTV (AF41)</div>
+                  <div class="qos-bar-wrap"><div class="qos-fill" style="width:20%;background:var(--orange);">20%</div></div>
+                  <div class="qos-pct">20%</div>
+                </div>
+                <div class="qos-item">
+                  <div class="qos-label">VDI (AF31)</div>
+                  <div class="qos-bar-wrap"><div class="qos-fill" style="width:25%;background:var(--blue);">25%</div></div>
+                  <div class="qos-pct">25%</div>
+                </div>
+                <div class="qos-item">
+                  <div class="qos-label">Datos (BE)</div>
+                  <div class="qos-bar-wrap"><div class="qos-fill" style="width:40%;background:var(--accent);">40%</div></div>
+                  <div class="qos-pct">40%</div>
+                </div>
+              </div>
+              <div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:var(--radius2);">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:700;">ENLACE ACTIVO</div>
+                <div style="font-size:20px;font-family:var(--mono);color:var(--accent);">1 Gbps</div>
+                <div style="font-size:12px;color:var(--text2);">Capacidad total por enlace WAN</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon red">&#x26A0;</div>
+              <div><div class="card-title">Alertas del Sistema</div><div class="card-subtitle">Últimas 24 horas</div></div>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-warn">
+                <div class="alert-icon">&#x26A0;</div>
+                <div><strong>Sede 1-B:</strong> Latencia elevada (18ms). Verificar enlace WAN secundario.</div>
+              </div>
+              <div class="alert alert-info">
+                <div class="alert-icon">ℹ️</div>
+                <div><strong>Sede 2:</strong> Utilización de banda al 89%. Considera ampliar QoS para Datos.</div>
+              </div>
+              <div class="alert alert-success">
+                <div class="alert-icon">&#x2713;</div>
+                <div>Todos los firewalls con políticas actualizadas y sincronizadas.</div>
+              </div>
+              <div style="margin-top:12px;display:flex;gap:8px;">
+                <button class="btn btn-ghost btn-sm" onclick="toast('Abriendo consola de diagnóstico...','info')">&#x1F50D; Diagnóstico</button>
+                <button class="btn btn-ghost btn-sm" onclick="toast('Generando reporte de alertas...','info')">&#x1F4CB; Exportar alertas</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ██ IP PLANNING ██ -->
+    <div class="content-panel" id="panel-ip-planning">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">&#x1F4CA; IP Planning</div>
+          <div class="panel-subtitle">Direccionamiento, VLANs y políticas QoS para la red SD-WAN</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="calcularIP()">&#x1F9EE; Calculadora IP</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportIPPlan()">&#x2B07; Exportar</button>
+          <button class="btn btn-accent btn-sm" onclick="generateIPPlan()">✦ Generar Plan</button>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <!-- Sedes -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header">
+            <div class="card-icon cyan">&#x1F3E2;</div>
+            <div><div class="card-title">Sedes y Usuarios</div><div class="card-subtitle">Define la infraestructura por sede</div></div>
+            <div class="card-actions">
+              <button class="btn btn-accent btn-sm" onclick="agregarSede()">+ Agregar sede</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="sedes-container" style="display:flex;flex-direction:column;gap:10px;">
+              <!-- Sedes se generan dinámicamente -->
+            </div>
+            <div style="margin-top:14px;padding:12px 16px;background:var(--accent3);border:1px solid rgba(0,212,170,0.2);border-radius:var(--radius2);display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-size:13px;color:var(--text2);">Total de usuarios en la red:</div>
+              <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent)" id="total-usuarios">2,280</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:16px;">
+
+          <!-- VLANs editables -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon blue">&#x1F3F7;</div>
+              <div><div class="card-title">Plan de VLANs</div><div class="card-subtitle">Editable — haz clic en cualquier celda</div></div>
+              <div class="card-actions">
+                <button class="btn btn-ghost btn-sm" onclick="agregarVLAN()">+ VLAN</button>
+              </div>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <div class="table-wrap">
+                <table id="vlan-table">
+                  <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Subred Sede 1</th><th>Gateway</th><th>DSCP</th><th></th></tr>
+                  </thead>
+                  <tbody id="vlan-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- QoS -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon orange">&#x26A1;</div>
+              <div><div class="card-title">Políticas QoS</div><div class="card-subtitle">Calidad de servicio por tráfico</div></div>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Clase</th><th>Tráfico</th><th>DSCP</th><th>BW</th><th>Prioridad</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="badge badge-red">EF</span></td><td>Voz VoIP</td><td><span class="badge badge-gray">46</span></td><td>15%</td><td><span class="badge badge-red">Crítica</span></td></tr>
+                    <tr><td><span class="badge badge-orange">AF41</span></td><td>CCTV</td><td><span class="badge badge-gray">34</span></td><td>20%</td><td><span class="badge badge-orange">Alta</span></td></tr>
+                    <tr><td><span class="badge badge-blue">AF31</span></td><td>VDI</td><td><span class="badge badge-gray">26</span></td><td>25%</td><td><span class="badge badge-blue">Media</span></td></tr>
+                    <tr><td><span class="badge badge-cyan">BE</span></td><td>Datos</td><td><span class="badge badge-gray">0</span></td><td>40%</td><td><span class="badge badge-gray">Normal</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculadora IP -->
+        <div class="card" id="ip-calc-card" style="display:none;margin-bottom:16px;">
+          <div class="card-header">
+            <div class="card-icon purple">&#x1F9EE;</div>
+            <div><div class="card-title">Calculadora de Subred</div><div class="card-subtitle">Ingresa una dirección IP en notación CIDR</div></div>
+            <div class="card-actions"><button class="btn-icon" onclick="document.getElementById('ip-calc-card').style.display='none'">&#x2715;</button></div>
+          </div>
+          <div class="card-body">
+            <div class="form-row" style="margin-bottom:12px;">
+              <div class="form-group" style="margin:0;">
+                <label>Dirección IP / CIDR</label>
+                <div class="input-group">
+                  <input type="text" id="cidr-input" placeholder="192.168.1.0/24" oninput="calcSubnet()">
+                  <button class="btn btn-accent" onclick="calcSubnet()">Calcular</button>
+                </div>
+              </div>
+            </div>
+            <div class="ip-calc-result" id="ip-calc-result">
+              <div class="ip-calc-item"><div class="ip-calc-label">Red</div><div class="ip-calc-value" id="calc-red">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Máscara</div><div class="ip-calc-value" id="calc-mask">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Gateway sugerido</div><div class="ip-calc-value" id="calc-gw">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Broadcast</div><div class="ip-calc-value" id="calc-bc">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Hosts disponibles</div><div class="ip-calc-value" id="calc-hosts">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Rango de hosts</div><div class="ip-calc-value" id="calc-range">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla resumen por sedes -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">&#x1F4E1;</div>
+            <div><div class="card-title">Direccionamiento por Sede</div><div class="card-subtitle">Plan completo de subredes</div></div>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Sede</th><th>VLAN Datos</th><th>VLAN Voz</th><th>VLAN CCTV</th><th>VLAN Gestión</th><th>Usuarios</th><th>Estado</th></tr>
+                </thead>
+                <tbody id="subnet-summary-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ██ TOPOLOGÍA ██ -->
+    <div class="content-panel" id="panel-topology">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">&#x1F5FA; Topología de Red</div>
+          <div class="panel-subtitle">Vista interactiva de la infraestructura SD-WAN Dual-Hub</div>
+        </div>
+        <div class="panel-actions">
+          <div class="seg-control">
+            <button class="seg-btn active" onclick="setTopoView('logical',this)">Lógica</button>
+            <button class="seg-btn" onclick="setTopoView('physical',this)">Física</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="exportTopo()">&#x2B07; Exportar</button>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header">
+            <div class="card-icon cyan">&#x1F310;</div>
+            <div><div class="card-title">Diagrama SD-WAN — Dual Hub & Spoke</div><div class="card-subtitle">Haz clic en un nodo para ver detalles</div></div>
+            <div class="card-actions">
+              <span class="badge badge-green"><span class="dot dot-green"></span> Hub 1</span>
+              <span class="badge badge-blue"><span class="dot" style="background:var(--blue)"></span> Hub 2</span>
+              <span class="badge badge-gray">Ramas</span>
+            </div>
+          </div>
+          <div class="card-body" style="padding:12px;">
+            <div id="topo-canvas">
+              <svg class="topo-lines" id="topo-svg"></svg>
+              <!-- Nodes rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Node detail panel -->
+        <div class="card" id="node-detail" style="display:none;margin-bottom:16px;">
+          <div class="card-header">
+            <div class="card-icon cyan" id="nd-icon">&#x1F500;</div>
+            <div><div class="card-title" id="nd-name">Dispositivo</div><div class="card-subtitle" id="nd-desc">Detalles</div></div>
+            <div class="card-actions"><button class="btn-icon" onclick="document.getElementById('node-detail').style.display='none'">&#x2715;</button></div>
+          </div>
+          <div class="card-body">
+            <div class="grid grid-3">
+              <div class="ip-calc-item"><div class="ip-calc-label">IP Gestión</div><div class="ip-calc-value" id="nd-ip">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Modelo</div><div class="ip-calc-value" id="nd-model">—</div></div>
+              <div class="ip-calc-item"><div class="ip-calc-label">Estado</div><div class="ip-calc-value" id="nd-status">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon blue">&#x1F4CA;</div>
+              <div><div class="card-title">Inventario de Dispositivos</div></div>
+            </div>
+            <div class="card-body" style="padding:0;">
+              <table><thead><tr><th>Tipo</th><th>Cant.</th><th>Descripción</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td>&#x1F500; Routers</td><td><span class="badge badge-cyan">4</span></td><td>2 Hubs + 2 Ramas</td><td><span class="badge badge-green">&#x2713; Activos</span></td></tr>
+                <tr><td>&#x1F50C; Switches</td><td><span class="badge badge-blue">8</span></td><td>2 por sede</td><td><span class="badge badge-green">&#x2713; Activos</span></td></tr>
+                <tr><td>&#x1F4E1; APs</td><td><span class="badge badge-purple">4</span></td><td>1 por sede</td><td><span class="badge badge-orange">&#x26A0; Revisar</span></td></tr>
+                <tr><td>&#x1F6E1; Firewalls</td><td><span class="badge badge-orange">2</span></td><td>Hubs principales</td><td><span class="badge badge-green">&#x2713; Activos</span></td></tr>
+                <tr><td>&#x1F5A5; Servidores</td><td><span class="badge badge-red">2</span></td><td>Apps críticas</td><td><span class="badge badge-green">&#x2713; Activos</span></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon green">&#x1F517;</div>
+              <div><div class="card-title">Enlace de Datos</div><div class="card-subtitle">Ancho de banda configurado</div></div>
+            </div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--text2);">Hub 1 &#x2194; Hub 2</span><span style="font-size:12px;font-family:var(--mono);color:var(--accent);">1 Gbps</span></div><div class="progress-bar"><div class="progress-fill progress-cyan" style="width:100%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--text2);">Hub 1 &#x2194; Sede 1-A</span><span style="font-size:12px;font-family:var(--mono);color:var(--accent);">500 Mbps</span></div><div class="progress-bar"><div class="progress-fill progress-cyan" style="width:50%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--text2);">Hub 1 &#x2194; Sede 1-B</span><span style="font-size:12px;font-family:var(--mono);color:var(--orange);">100 Mbps</span></div><div class="progress-bar"><div class="progress-fill progress-orange" style="width:10%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--text2);">Hub 2 &#x2194; Sede 2</span><span style="font-size:12px;font-family:var(--mono);color:var(--accent);">1 Gbps</span></div><div class="progress-bar"><div class="progress-fill progress-cyan" style="width:100%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:var(--text2);">Hub 2 &#x2194; Sede 3</span><span style="font-size:12px;font-family:var(--mono);color:var(--accent);">200 Mbps</span></div><div class="progress-bar"><div class="progress-fill progress-cyan" style="width:20%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ██ DEVICES ██ -->
+    <div class="content-panel" id="panel-devices">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">&#x2699; Configuración de Dispositivos</div>
+          <div class="panel-subtitle">Genera y exporta configuración CLI para múltiples fabricantes</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="copyCLI()">&#x1F4CB; Copiar CLI</button>
+          <button class="btn btn-ghost btn-sm" onclick="downloadCLI()">&#x2B07; .txt</button>
+          <button class="btn btn-accent btn-sm" onclick="exportExactConfig()">&#x1F4BE; Exportar .conf</button>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <div class="grid grid-2" style="margin-bottom:16px;">
+          <!-- Selector tipo + vendor -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon blue">[SW]</div>
+              <div><div class="card-title">Tipo de Dispositivo</div></div>
+            </div>
+            <div class="card-body">
+              <div class="device-grid" id="device-type-grid"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon purple">&#x1F3ED;</div>
+              <div><div class="card-title">Fabricante</div></div>
+            </div>
+            <div class="card-body" style="max-height:260px;overflow-y:auto;">
+              <div class="vendor-list" id="vendor-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:16px;">
+          <!-- Info general -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon cyan">&#x1F4CB;</div>
+              <div><div class="card-title">Información General</div><div class="card-subtitle">Datos del dispositivo</div></div>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group" style="margin:0;">
+                  <label class="label-required">Nombre del Dispositivo</label>
+                  <input type="text" id="dev-name" value="ROUTER-HUB-01" oninput="updateCLI()">
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label>Modelo</label>
+                  <input type="text" id="dev-model" value="Cisco ASR 1000">
+                </div>
+              </div>
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label>IP de Gestión</label>
+                  <input type="text" id="dev-mgmt-ip" value="10.1.254.1" oninput="updateCLI()">
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label>Versión OS</label>
+                  <input type="text" id="dev-os" value="17.03.04">
+                </div>
+              </div>
+              <div class="form-row" style="margin-top:12px;">
+                <div class="form-group" style="margin:0;">
+                  <label>IP WAN</label>
+                  <input type="text" id="dev-wan-ip" value="203.0.113.1" oninput="updateCLI()">
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label>Gateway WAN</label>
+                  <input type="text" id="dev-wan-gw" value="203.0.113.254" oninput="updateCLI()">
+                </div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label>Ubicación</label>
+                <input type="text" id="dev-location" value="Sede Principal — Rack A">
+              </div>
+            </div>
+          </div>
+
+          <!-- Acceso admin -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon red">&#x1F510;</div>
+              <div><div class="card-title">Acceso Administrativo</div></div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Usuario Admin</label>
+                <input type="text" id="dev-user" value="admin" oninput="updateCLI()">
+              </div>
+              <div class="form-group">
+                <label>Contraseña Enable</label>
+                <input type="password" id="dev-pass" placeholder="••••••••">
+                <div class="input-hint">Solo para referencia local. No se almacena.</div>
+              </div>
+              <div class="form-group">
+                <label>Máscara de Subred Gestión</label>
+                <input type="text" id="dev-mask" value="255.255.255.0" oninput="updateCLI()">
+              </div>
+              <div class="form-group">
+                <label>Número de Serie</label>
+                <input type="text" id="dev-serial" value="SN123456789">
+              </div>
+              <div class="form-group">
+                <label>Protocolos habilitados</label>
+                <div class="tag-wrap" style="margin-top:4px;">
+                  <span class="tag active">SSH v2</span>
+                  <span class="tag active">OSPF</span>
+                  <span class="tag active">HTTPS</span>
+                  <span class="tag">Telnet</span>
+                  <span class="tag active">SNMP</span>
+                  <span class="tag">CDP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLI Output -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon green">&#x1F527;</div>
+            <div><div class="card-title" id="cli-title">Configuración CLI — Cisco IOS-XE</div><div class="card-subtitle">Comandos listos para implementar</div></div>
+            <div class="card-actions">
+              <button class="btn btn-ghost btn-sm" onclick="copyCLI()">&#x1F4CB; Copiar</button>
+              <button class="btn btn-ghost btn-sm" onclick="downloadCLI()">&#x2B07; .txt</button>
+              <button class="btn btn-accent btn-sm" onclick="exportExactConfig()">&#x1F4BE; .conf</button>
+            </div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang" id="cli-lang">CISCO IOS-XE</span>
+              <div class="code-actions">
+                <button class="btn-icon btn-sm" onclick="copyCLI()" title="Copiar">&#x2398;</button>
+              </div>
+            </div>
+            <div class="code-body" id="cli-output"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ██ SECURITY ██ -->
+    <div class="content-panel" id="panel-security">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">&#x1F6E1; Seguridad</div>
+          <div class="panel-subtitle">Políticas de firewall, ACLs y endurecimiento de dispositivos</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn btn-ghost btn-sm" onclick="exportSecConfig()">&#x2B07; Exportar ACLs</button>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <div class="accordion" style="margin-bottom:16px;">
+          <div class="accordion-item open">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+              &#x1F512; Políticas de Firewall <span class="accordion-arrow">&#x203A;</span>
+            </button>
+            <div class="accordion-body">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>#</th><th>Nombre</th><th>Origen</th><th>Destino</th><th>Puerto</th><th>Acción</th><th>Estado</th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="badge badge-gray">001</span></td><td>Permitir Gestión</td><td>10.1.50.0/24</td><td>Any</td><td>22,443</td><td><span class="badge badge-green">ALLOW</span></td><td><span class="badge badge-cyan">Activa</span></td></tr>
+                    <tr><td><span class="badge badge-gray">002</span></td><td>Bloquear Telnet</td><td>Any</td><td>Any</td><td>23</td><td><span class="badge badge-red">DENY</span></td><td><span class="badge badge-cyan">Activa</span></td></tr>
+                    <tr><td><span class="badge badge-gray">003</span></td><td>VoIP Prioritario</td><td>10.1.30.0/24</td><td>Any</td><td>5060,RTP</td><td><span class="badge badge-green">ALLOW</span></td><td><span class="badge badge-cyan">Activa</span></td></tr>
+                    <tr><td><span class="badge badge-gray">004</span></td><td>Invitados Isolado</td><td>10.1.60.0/24</td><td>RFC1918</td><td>Any</td><td><span class="badge badge-red">DENY</span></td><td><span class="badge badge-cyan">Activa</span></td></tr>
+                    <tr><td><span class="badge badge-gray">005</span></td><td>Bloquear SMB</td><td>Any</td><td>Any</td><td>445</td><td><span class="badge badge-red">DENY</span></td><td><span class="badge badge-cyan">Activa</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="toast('Política agregada','success')">+ Agregar política</button>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+              &#x1F4CB; ACLs de Acceso <span class="accordion-arrow">&#x203A;</span>
+            </button>
+            <div class="accordion-body">
+              <div class="code-wrap">
+                <div class="code-toolbar"><span class="code-lang">CISCO IOS ACL</span><button class="btn-icon btn-sm" onclick="copyCLI()">&#x2398;</button></div>
+                <div class="code-body"><div class="code-line"><span class="code-comment">! ACL de Gestión — solo VLAN 50</span></div>
+<div class="code-line"><span class="code-keyword">ip access-list</span> extended MGMT-ACCESS</div>
+<div class="code-line"> <span class="code-keyword">permit</span> tcp <span class="code-value">10.1.50.0 0.0.0.255</span> any eq <span class="code-string">22</span></div>
+<div class="code-line"> <span class="code-keyword">permit</span> tcp <span class="code-value">10.1.50.0 0.0.0.255</span> any eq <span class="code-string">443</span></div>
+<div class="code-line"> <span class="code-keyword">deny</span> ip any any log</div>
+<div class="code-line"><span class="code-comment">!</span></div>
+<div class="code-line"><span class="code-comment">! ACL Anti-spoofing</span></div>
+<div class="code-line"><span class="code-keyword">ip access-list</span> extended ANTI-SPOOF</div>
+<div class="code-line"> <span class="code-keyword">deny</span> ip <span class="code-value">127.0.0.0 0.255.255.255</span> any</div>
+<div class="code-line"> <span class="code-keyword">deny</span> ip <span class="code-value">10.0.0.0 0.255.255.255</span> any</div>
+<div class="code-line"> <span class="code-keyword">permit</span> ip any any</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+              &#x1F511; Endurecimiento de Dispositivos <span class="accordion-arrow">&#x203A;</span>
+            </button>
+            <div class="accordion-body">
+              <div class="grid grid-2">
+                <div>
+                  <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text);">Checklist de Seguridad</div>
+                  <div class="status-list">
+                    <div class="status-item"><div class="status-icon">✅</div><div class="status-info"><div class="status-name">SSH v2 habilitado</div></div></div>
+                    <div class="status-item"><div class="status-icon">✅</div><div class="status-info"><div class="status-name">Telnet deshabilitado</div></div></div>
+                    <div class="status-item"><div class="status-icon">✅</div><div class="status-info"><div class="status-name">CDP deshabilitado en WAN</div></div></div>
+                    <div class="status-item"><div class="status-icon">✅</div><div class="status-info"><div class="status-name">Servicios TCP/UDP pequeños deshabilitados</div></div></div>
+                    <div class="status-item"><div class="status-icon">&#x26A0;</div><div class="status-info"><div class="status-name">SNMP v3 — pendiente configurar</div></div></div>
+                    <div class="status-item"><div class="status-icon">&#x26A0;</div><div class="status-info"><div class="status-name">NTP sincronizado — verificar</div></div></div>
+                  </div>
+                </div>
+                <div class="code-wrap">
+                  <div class="code-toolbar"><span class="code-lang">HARDENING</span></div>
+                  <div class="code-body">
+<div class="code-line"><span class="code-comment">! Servicios a deshabilitar</span></div>
+<div class="code-line"><span class="code-keyword">no</span> service udp-small-servers</div>
+<div class="code-line"><span class="code-keyword">no</span> service tcp-small-servers</div>
+<div class="code-line"><span class="code-keyword">no</span> cdp run</div>
+<div class="code-line"><span class="code-keyword">no</span> ip http server</div>
+<div class="code-line"><span class="code-keyword">no</span> ip source-route</div>
+<div class="code-line"><span class="code-comment">!</span></div>
+<div class="code-line"><span class="code-comment">! SSH configuración</span></div>
+<div class="code-line"><span class="code-keyword">ip ssh</span> version <span class="code-string">2</span></div>
+<div class="code-line"><span class="code-keyword">ip ssh</span> authentication-retries <span class="code-string">2</span></div>
+<div class="code-line"><span class="code-keyword">ip ssh</span> time-out <span class="code-string">60</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ██ REPORTS ██ -->
+    <div class="content-panel" id="panel-reports">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">&#x1F4CB; Reportes y Documentación</div>
+          <div class="panel-subtitle">Genera documentación técnica y ejecutiva del proyecto</div>
+        </div>
+      </div>
+      <div class="content-area">
+
+        <div class="grid grid-3" style="margin-bottom:16px;">
+          <div class="card" style="cursor:pointer;" onclick="generarReporteCompleto()">
+            <div class="card-header"><div class="card-icon cyan">&#x1F4C4;</div><div><div class="card-title">Reporte Completo</div><div class="card-subtitle">Toda la documentación</div></div></div>
+            <div class="card-body"><p style="font-size:13px;color:var(--text2);">Incluye IP plan, topología, dispositivos, seguridad y QoS.</p><div style="margin-top:12px;"><button class="btn btn-accent btn-sm" style="width:100%;" onclick="generarReporteCompleto()">&#x2B07; Generar TXT</button></div></div>
+          </div>
+          <div class="card" style="cursor:pointer;">
+            <div class="card-header"><div class="card-icon blue">&#x1F454;</div><div><div class="card-title">Resumen Ejecutivo</div><div class="card-subtitle">Para stakeholders</div></div></div>
+            <div class="card-body"><p style="font-size:13px;color:var(--text2);">Indicadores clave, estado del proyecto y próximos pasos.</p><div style="margin-top:12px;"><button class="btn btn-blue btn-sm" style="width:100%;" onclick="toast('Generando resumen ejecutivo...','info')">&#x2B07; Generar</button></div></div>
+          </div>
+          <div class="card" style="cursor:pointer;">
+            <div class="card-header"><div class="card-icon orange">&#x1F527;</div><div><div class="card-title">Documentación Técnica</div><div class="card-subtitle">Para operaciones</div></div></div>
+            <div class="card-body"><p style="font-size:13px;color:var(--text2);">Runbook, guías de troubleshooting y comandos de verificación.</p><div style="margin-top:12px;"><button class="btn btn-ghost btn-sm" style="width:100%;" onclick="toast('Generando doc técnica...','info')">&#x2B07; Generar</button></div></div>
+          </div>
+        </div>
+
+        <!-- Estado del proyecto tabla -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon purple">&#x1F4CA;</div>
+            <div><div class="card-title">Estado del Proyecto</div><div class="card-subtitle">Resumen de componentes</div></div>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table><thead><tr><th>Componente</th><th>Estado</th><th>Completitud</th><th>Elementos</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>IP Planning</strong></td>
+                <td><span class="badge badge-green">&#x2713; Completado</span></td>
+                <td><div class="progress-bar" style="width:120px;"><div class="progress-fill progress-cyan" style="width:100%"></div></div></td>
+                <td style="font-family:var(--mono);font-size:12px;">4 sedes · 5 VLANs · 4 QoS</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="switchTab('ip-planning',null)">Ver &#x2192;</button></td>
+              </tr>
+              <tr>
+                <td><strong>Topología</strong></td>
+                <td><span class="badge badge-green">&#x2713; Completado</span></td>
+                <td><div class="progress-bar" style="width:120px;"><div class="progress-fill progress-cyan" style="width:100%"></div></div></td>
+                <td style="font-family:var(--mono);font-size:12px;">20 dispositivos</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="switchTab('topology',null)">Ver &#x2192;</button></td>
+              </tr>
+              <tr>
+                <td><strong>Dispositivos</strong></td>
+                <td><span class="badge badge-orange">&#x2699; En Progreso</span></td>
+                <td><div class="progress-bar" style="width:120px;"><div class="progress-fill progress-orange" style="width:60%"></div></div></td>
+                <td style="font-family:var(--mono);font-size:12px;">12 vendors · CLI generada</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="switchTab('devices',null)">Ver &#x2192;</button></td>
+              </tr>
+              <tr>
+                <td><strong>Seguridad</strong></td>
+                <td><span class="badge badge-orange">&#x2699; En Progreso</span></td>
+                <td><div class="progress-bar" style="width:120px;"><div class="progress-fill progress-orange" style="width:75%"></div></div></td>
+                <td style="font-family:var(--mono);font-size:12px;">5 políticas · ACLs</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="switchTab('security',null)">Ver &#x2192;</button></td>
+              </tr>
+              <tr>
+                <td><strong>Documentación</strong></td>
+                <td><span class="badge badge-gray">⏳ Pendiente</span></td>
+                <td><div class="progress-bar" style="width:120px;"><div class="progress-fill" style="width:10%;background:var(--text3)"></div></div></td>
+                <td style="font-family:var(--mono);font-size:12px;">Runbooks · Reportes</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="toast('Abriendo editor de documentación...','info')">Editar &#x2192;</button></td>
+              </tr>
+            </tbody></table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div><!-- app-body -->
+
+<!-- ══ MODAL NODO ══ -->
+<div class="modal-overlay" id="nodo-modal-overlay" onclick="cerrarNodoModal(event)">
+  <div class="modal" id="nodo-modal" style="max-width:720px;width:96%;">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="nodo-modal-icon" style="font-size:26px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--border);"></div>
+        <div>
+          <div class="modal-title" id="nodo-modal-title">—</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="nodo-modal-subtitle">—</div>
+        </div>
+        <div id="nodo-modal-badge" style="margin-left:4px;"></div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('nodo-modal-overlay').classList.remove('open')">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="nodo-modal-body" style="padding:0;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="copiarConfigNodo()">&#x1F4CB; Copiar CLI</button>
+      <button class="btn btn-accent btn-sm" onclick="descargarConfigNodo()">&#x2B07; Descargar .conf</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('nodo-modal-overlay').classList.remove('open')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST CONTAINER ══ -->
+<div id="toast-container"></div>
+
+<!-- ══ IP CALC MODAL ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Modal</div>
+      <button class="modal-close" onclick="closeModalDirect()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const state = {
+  currentTab: 'dashboard',
+  currentDeviceType: 'router',
+  currentVendor: 'cisco',
+  sedes: [
+    { nombre: 'Sede 1-A', usuarios: 530, octet: 1 },
+    { nombre: 'Sede 1-B', usuarios: 300, octet: 2 },
+    { nombre: 'Sede 2',   usuarios: 1240, octet: 3 },
+    { nombre: 'Sede 3',   usuarios: 210, octet: 4 },
+  ],
+  vlans: [
+    { id: 20, nombre: 'Datos',    dscp: 'BE (0)',    color: 'blue' },
+    { id: 30, nombre: 'Voz',      dscp: 'EF (46)',   color: 'green' },
+    { id: 40, nombre: 'CCTV',     dscp: 'AF41 (34)', color: 'orange' },
+    { id: 50, nombre: 'Gestión',  dscp: 'CS1 (8)',   color: 'purple' },
+    { id: 60, nombre: 'Invitados',dscp: 'BE (0)',    color: 'gray' },
+  ]
+};
+
+const DEVICE_TYPES = [
+  { id:'router',   icon:'&#x1F500;', name:'Router' },
+  { id:'switch',   icon:'&#x1F50C;', name:'Switch' },
+  { id:'firewall', icon:'&#x1F6E1;', name:'Firewall' },
+  { id:'ap',       icon:'&#x1F4E1;', name:'Access Point' },
+  { id:'server',   icon:'&#x1F5A5;', name:'Servidor' },
+  { id:'storage',  icon:'&#x1F4BE;', name:'Storage' },
+];
+
+const VENDORS = [
+  { id:'cisco',    name:'Cisco',        model:'ASR 1000',               color:'#58a6ff', lang:'CISCO IOS-XE' },
+  { id:'fortinet', name:'Fortinet',     model:'FortiGate 60F',          color:'#f0883e', lang:'FORTIOS' },
+  { id:'juniper',  name:'Juniper',      model:'MX480',                  color:'#e3b341', lang:'JUNOS' },
+  { id:'arista',   name:'Arista',       model:'DCS-7050SX3',            color:'#bc8cff', lang:'EOS' },
+  { id:'paloalto', name:'Palo Alto',    model:'PA-5220',                color:'#ff7b72', lang:'PAN-OS' },
+  { id:'huawei',   name:'Huawei',       model:'CloudEngine 12804',      color:'#3fb950', lang:'VRP' },
+  { id:'mikrotik', name:'MikroTik',     model:'CCR2116',                color:'#00d4aa', lang:'ROUTEROS' },
+  { id:'hp',       name:'HP / Aruba',   model:'Aruba 8400',             color:'#00d4aa', lang:'AOS' },
+  { id:'ubiquiti', name:'Ubiquiti',     model:'UniFi Dream Machine',    color:'#58a6ff', lang:'UNIFI' },
+  { id:'dell',     name:'Dell EMC',     model:'PowerSwitch Z9332F',     color:'#8b949e', lang:'DELL-OS10' },
+  { id:'tplink',   name:'TP-Link',      model:'Omada ER8411',           color:'#e3b341', lang:'OMADA-OS' },
+  { id:'extreme',  name:'Extreme',      model:'ExtremeXOS',             color:'#bc8cff', lang:'EXOS' },
+];
+
+// CLI templates per vendor (using state values)
+function getCLI(vendor) {
+  const n = document.getElementById('dev-name')?.value || 'ROUTER-HUB-01';
+  const mgmt = document.getElementById('dev-mgmt-ip')?.value || '10.1.254.1';
+  const wan = document.getElementById('dev-wan-ip')?.value || '203.0.113.1';
+  const gw = document.getElementById('dev-wan-gw')?.value || '203.0.113.254';
+  const user = document.getElementById('dev-user')?.value || 'admin';
+
+  const configs = {
+    cisco: `!\n! ============================================================\n! CISCO IOS-XE — ${n}\n! ============================================================\nhostname ${n}\nip domain-name ucompensar.edu.co\nno ip domain-lookup\n!\n! Interfaces WAN / LAN\ninterface GigabitEthernet0/0/0\n description WAN-ISP\n ip address ${wan} 255.255.255.0\n no shutdown\n!\ninterface GigabitEthernet0/0/1\n description LAN-GESTION\n ip address ${mgmt} 255.255.255.0\n no shutdown\n!\ninterface Loopback0\n description OSPF-ROUTER-ID\n ip address 10.1.254.254 255.255.255.255\n!\n! VLANs\nvlan 20\n name VLAN-DATOS\nvlan 30\n name VLAN-VOZ\nvlan 40\n name VLAN-CCTV\nvlan 50\n name VLAN-GESTION\nvlan 60\n name VLAN-INVITADOS\n!\n! Interfaces SVI\ninterface Vlan20\n description DATOS\n ip address 10.1.20.254 255.255.255.0\n no shutdown\n!\ninterface Vlan30\n description VOZ\n ip address 10.1.30.254 255.255.255.0\n no shutdown\n!\ninterface Vlan40\n description CCTV\n ip address 10.1.40.254 255.255.255.0\n no shutdown\n!\n! OSPF\nrouter ospf 65000\n router-id 10.1.254.254\n network 10.1.0.0 0.0.255.255 area 0\n redistribute connected\n!\n! Ruta por defecto\nip route 0.0.0.0 0.0.0.0 ${gw}\n!\n! QoS\nclass-map match-any VOICE\n match dscp ef\nclass-map match-any CCTV\n match dscp af41\npolicy-map SD-WAN-QOS\n class VOICE\n  priority 256\n class CCTV\n  bandwidth 512\n class class-default\n  fair-queue\ninterface GigabitEthernet0/0/0\n service-policy output SD-WAN-QOS\n!\n! Seguridad\nno service udp-small-servers\nno service tcp-small-servers\nno cdp run\nip ssh version 2\nip ssh authentication-retries 2\naccess-list 1 permit 10.1.254.0 0.0.0.255\n! — FIN CONFIGURACIÓN — `,
+
+    fortinet: `config system global\n  set hostname ${n}\n  set timezone 20\n  set admintimeout 30\n  set admin-sport 8443\n  set admin-ssh-port 22\n  set admin-ssh-v1 disable\n  set admin-telnet disable\nend\n\nconfig system interface\n  edit "port1"\n    set alias "WAN-ISP"\n    set ip ${wan} 255.255.255.0\n    set allowaccess ping https ssh\n    set role wan\n  next\n  edit "port2"\n    set alias "LAN-GESTION"\n    set ip ${mgmt} 255.255.255.0\n    set allowaccess ping https ssh\n    set role lan\n  next\nend\n\nconfig system virtual-wire-pair\nend\n\nconfig firewall policy\n  edit 1\n    set name "LAN-to-WAN"\n    set srcintf "port2"\n    set dstintf "port1"\n    set srcaddr "all"\n    set dstaddr "all"\n    set action accept\n    set schedule "always"\n    set service "ALL"\n    set nat enable\n  next\nend\n\nconfig router ospf\n  set router-id 10.1.254.254\n  config area\n    edit 0.0.0.0\n    next\n  end\n  config network\n    edit 1\n      set prefix 10.1.0.0 255.255.0.0\n    next\n  end\nend`,
+
+    juniper: `# ============================================================\n# JUNOS — ${n}\n# ============================================================\nset system host-name ${n}\nset system domain-name ucompensar.edu.co\nset system services ssh root-login deny\nset system services ssh protocol-version v2\nset system login user ${user} class super-user\n\nset interfaces ge-0/0/0 description "WAN-ISP"\nset interfaces ge-0/0/0 unit 0 family inet address ${wan}/24\n\nset interfaces ge-0/0/1 description "LAN-GESTION"\nset interfaces ge-0/0/1 unit 0 family inet address ${mgmt}/24\n\nset interfaces lo0 unit 0 family inet address 10.1.254.254/32\n\nset vlans VLAN-DATOS vlan-id 20\nset vlans VLAN-VOZ vlan-id 30\nset vlans VLAN-CCTV vlan-id 40\nset vlans VLAN-GESTION vlan-id 50\n\nset routing-options router-id 10.1.254.254\nset routing-options static route 0.0.0.0/0 next-hop ${gw}\n\nset protocols ospf area 0.0.0.0 interface ge-0/0/1.0\nset protocols ospf area 0.0.0.0 interface lo0.0 passive\n\nset class-of-service interfaces ge-0/0/0 forwarding-classes VOICE AF41 AF31 BE\nset class-of-service schedulers VOICE transmit-rate percent 15 priority strict-high`,
+
+    arista: `! ============================================================\n! ARISTA EOS — ${n}\n! ============================================================\nhostname ${n}\n!\ninterface Ethernet1\n description WAN-ISP\n ip address ${wan}/24\n no shutdown\n!\ninterface Ethernet2\n description LAN-GESTION\n ip address ${mgmt}/24\n no shutdown\n!\ninterface Loopback0\n ip address 10.1.254.254/32\n!\nvlan 20\n name VLAN-DATOS\nvlan 30\n name VLAN-VOZ\nvlan 40\n name VLAN-CCTV\n!\ninterface Vlan20\n ip address 10.1.20.254/24\ninterface Vlan30\n ip address 10.1.30.254/24\n!\nrouter ospf 65000\n router-id 10.1.254.254\n network 10.1.0.0/16 area 0.0.0.0\n!\nip route 0.0.0.0/0 ${gw}`,
+
+    paloalto: `# ============================================================\n# PAN-OS — ${n}\n# ============================================================\nset deviceconfig system hostname ${n}\nset deviceconfig system dns-setting servers primary 8.8.8.8\n\nset network interface ethernet ethernet1/1 layer3 ip ${wan}/24\nset network interface ethernet ethernet1/1 comment "WAN-ISP"\n\nset network interface ethernet ethernet1/2 layer3 ip ${mgmt}/24\nset network interface ethernet ethernet1/2 comment "GESTION"\n\nset network virtual-router default interface ethernet1/1\nset network virtual-router default interface ethernet1/2\nset network virtual-router default routing-table ip static-route default nexthop ip-address ${gw}\n\nset network routing-profile OSPF protocol ospf router-id 10.1.254.254\n\nset zone UNTRUST network layer3 ethernet1/1\nset zone TRUST network layer3 ethernet1/2\n\nset rulebase security rules ALLOW-LAN-WAN from TRUST to UNTRUST application any service any action allow`,
+
+    huawei: `# ============================================================\n# HUAWEI VRP — ${n}\n# ============================================================\nsysname ${n}\n#\ninterface GigabitEthernet0/0/0\n description WAN-ISP\n ip address ${wan} 255.255.255.0\n#\ninterface GigabitEthernet0/0/1\n description LAN-GESTION\n ip address ${mgmt} 255.255.255.0\n#\ninterface LoopBack0\n description OSPF-RID\n ip address 10.1.254.254 255.255.255.255\n#\nvlan batch 20 30 40 50 60\n#\ninterface Vlan-interface20\n ip address 10.1.20.254 255.255.255.0\n#\ninterface Vlan-interface30\n ip address 10.1.30.254 255.255.255.0\n#\nospf 65000 router-id 10.1.254.254\n area 0.0.0.0\n  network 10.1.0.0 0.0.255.255\n#\nip route-static 0.0.0.0 0.0.0.0 ${gw}\n#\ndiffserv domain SDWAN\n phb ef bandwidth-percentage 15\n phb af4 bandwidth-percentage 20`,
+
+    mikrotik: `# ============================================================\n# MIKROTIK ROUTEROS — ${n}\n# ============================================================\n/system identity set name="${n}"\n/system clock set time-zone-name=America/Bogota\n#\n/interface ethernet set [ find default-name=ether1 ] name=WAN\n/interface ethernet set [ find default-name=ether2 ] name=MGMT\n#\n/ip address add address=${wan}/24 interface=WAN comment="WAN ISP"\n/ip address add address=${mgmt}/24 interface=MGMT comment="Gestion"\n/ip address add address=10.1.254.254/32 interface=loopback\n#\n/interface vlan add name=VLAN-DATOS vlan-id=20 interface=ether3\n/interface vlan add name=VLAN-VOZ vlan-id=30 interface=ether3\n/interface vlan add name=VLAN-CCTV vlan-id=40 interface=ether3\n/ip address add address=10.1.20.254/24 interface=VLAN-DATOS\n/ip address add address=10.1.30.254/24 interface=VLAN-VOZ\n#\n/ip route add dst-address=0.0.0.0/0 gateway=${gw}\n#\n/routing ospf instance set default router-id=10.1.254.254\n/routing ospf network add network=10.1.0.0/16 area=backbone\n#\n/ip firewall filter add chain=input protocol=tcp dst-port=22 action=accept comment="SSH"\n/ip firewall filter add chain=input action=drop comment="Drop all"`,
+
+    hp: `! ============================================================\n! HP ARUBA AOS — ${n}\n! ============================================================\nhostname ${n}\n!\ninterface 1/1/1\n description WAN-ISP\n ip address ${wan}/24\n no shutdown\n!\ninterface 1/1/2\n description LAN-GESTION\n ip address ${mgmt}/24\n no shutdown\n!\ninterface loopback 0\n ip address 10.1.254.254/32\n!\nvlan 20 name VLAN-DATOS\nvlan 30 name VLAN-VOZ\nvlan 40 name VLAN-CCTV\nvlan 50 name VLAN-GESTION\n!\ninterface vlan 20\n ip address 10.1.20.254/24\n description DATOS\n!\nrouter ospf\n router-id 10.1.254.254\n area 0.0.0.0\n network 10.1.0.0 0.0.255.255\n!\nip route 0.0.0.0 0.0.0.0 ${gw}`,
+
+    ubiquiti: `# ============================================================\n# UBIQUITI EDGEOS — ${n}\n# ============================================================\nset system host-name ${n}\nset system time-zone America/Bogota\n\nset interfaces ethernet eth0 description "WAN-ISP"\nset interfaces ethernet eth0 address ${wan}/24\n\nset interfaces ethernet eth1 description "LAN-GESTION"\nset interfaces ethernet eth1 address ${mgmt}/24\n\nset interfaces loopback lo address 10.1.254.254/32\n\nset protocols ospf parameters router-id 10.1.254.254\nset protocols ospf area 0.0.0.0 network 10.1.0.0/16\n\nset protocols static route 0.0.0.0/0 next-hop ${gw}\n\nset traffic-policy shaper SD-WAN-QOS\nset traffic-policy shaper SD-WAN-QOS default bandwidth 40%\nset traffic-policy shaper SD-WAN-QOS class 10 match VOICE dscp EF\nset traffic-policy shaper SD-WAN-QOS class 10 bandwidth 15%`,
+
+    dell: `! ============================================================\n! DELL OS10 — ${n}\n! ============================================================\nhostname ${n}\n!\ninterface ethernet1/1/1\n description WAN-ISP\n ip address ${wan}/24\n no shutdown\n!\ninterface ethernet1/1/2\n description LAN-GESTION\n ip address ${mgmt}/24\n no shutdown\n!\ninterface loopback0\n ip address 10.1.254.254/32\n!\nvlan 20\n name VLAN-DATOS\nvlan 30\n name VLAN-VOZ\n!\ninterface vlan20\n ip address 10.1.20.254/24\ninterface vlan30\n ip address 10.1.30.254/24\n!\nrouter ospf 65000\n router-id 10.1.254.254\n network 10.1.0.0/16 area 0\n!\nip route 0.0.0.0/0 ${gw}`,
+
+    tplink: `! ============================================================\n! TP-LINK OMADA OS — ${n}\n! ============================================================\nsystem-view\nsysname ${n}\nquit\n!\ninterface GigabitEthernet0/0/1\n ip address ${wan} 255.255.255.0\n description WAN-ISP\n undo shutdown\nquit\n!\ninterface GigabitEthernet0/0/2\n ip address ${mgmt} 255.255.255.0\n description GESTION\n undo shutdown\nquit\n!\nvlan batch 20 30 40 50 60\ninterface Vlan-interface20\n ip address 10.1.20.254 255.255.255.0\nquit\ninterface Vlan-interface30\n ip address 10.1.30.254 255.255.255.0\nquit\n!\nrouter ospf 65000\n area 0.0.0.0\n network 10.1.0.0 0.0.255.255\nquit\n!\nip route-static 0.0.0.0 0.0.0.0 ${gw}`,
+
+    extreme: `! ============================================================\n! EXTREME EXOS — ${n}\n! ============================================================\nconfigure snmp sysName "${n}"\nconfigure timezone name UTC 0\n!\nconfigure ports 1 description-string "WAN-ISP"\nconfigure ipaddress ${wan}/24 ports 1\nenable ports 1\n!\nconfigure ports 2 description-string "LAN-GESTION"\nconfigure ipaddress ${mgmt}/24 ports 2\nenable ports 2\n!\ncreate vlan VLAN-DATOS tag 20\ncreate vlan VLAN-VOZ tag 30\ncreate vlan VLAN-CCTV tag 40\nconfigure vlan VLAN-DATOS ipaddress 10.1.20.254/24\nconfigure vlan VLAN-VOZ ipaddress 10.1.30.254/24\n!\nenable ospf\nconfigure ospf routerid 10.1.254.254\nconfigure ospf add vlan all area 0.0.0.0\n!\nconfigure iproute add default ${gw}`,
+  };
+  return configs[vendor] || configs.cisco;
+}
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function switchTab(tab, clickedTopBtn, clickedSideItem) {
+  state.currentTab = tab;
+  // Topbar tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (clickedTopBtn) clickedTopBtn.classList.add('active');
+  else {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b.getAttribute('onclick')?.includes(`'${tab}'`)) b.classList.add('active');
+    });
+  }
+  // Sidebar items
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  if (clickedSideItem) clickedSideItem.classList.add('active');
+  else {
+    document.querySelectorAll('.sidebar-item').forEach(i => {
+      if (i.getAttribute('onclick')?.includes(`'${tab}'`)) i.classList.add('active');
+    });
+  }
+  // Content panels
+  document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab)?.classList.add('active');
+  // Lazy init
+  if (tab === 'topology') renderTopology();
+}
+
+// ══════════════════════════════════════
+// SEDES
+// ══════════════════════════════════════
+function renderSedes() {
+  const cont = document.getElementById('sedes-container');
+  cont.innerHTML = '';
+  state.sedes.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'sede-row';
+    row.innerHTML = `
+      <div class="form-group" style="margin:0;">
+        <label>Nombre</label>
+        <input type="text" value="${s.nombre}" oninput="state.sedes[${i}].nombre=this.value;actualizarTablas();">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>Usuarios</label>
+        <input type="number" value="${s.usuarios}" min="1" oninput="state.sedes[${i}].usuarios=+this.value;actualizarTotal();actualizarTablas();">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>Octeto</label>
+        <input type="number" value="${s.octet}" min="1" max="254" oninput="state.sedes[${i}].octet=+this.value;actualizarTablas();">
+      </div>
+      <button class="btn btn-danger btn-sm" style="margin-top:22px;" onclick="eliminarSede(${i})">&#x1F5D1;</button>
+    `;
+    cont.appendChild(row);
+  });
+  actualizarTotal();
+  actualizarTablas();
+}
+
+function agregarSede() {
+  state.sedes.push({ nombre: `Sede ${state.sedes.length + 1}`, usuarios: 100, octet: state.sedes.length + 1 });
+  renderSedes();
+  actualizarTabsBadge();
+  toast('Sede agregada correctamente', 'success');
+}
+
+function eliminarSede(i) {
+  if (state.sedes.length <= 1) { toast('Debe haber al menos una sede', 'error'); return; }
+  state.sedes.splice(i, 1);
+  renderSedes();
+  actualizarTabsBadge();
+  toast('Sede eliminada', 'info');
+}
+
+function actualizarTotal() {
+  const total = state.sedes.reduce((s, x) => s + (x.usuarios || 0), 0);
+  const el = document.getElementById('total-usuarios');
+  if (el) el.textContent = total.toLocaleString('es-CO');
+  document.getElementById('dash-total-users').textContent = total.toLocaleString('es-CO');
+}
+
+function actualizarTabsBadge() {
+  document.getElementById('tab-badge-ip').textContent = `${state.sedes.length} sedes`;
+  document.getElementById('sb-count-ip').textContent = state.sedes.length;
+}
+
+function actualizarTablas() {
+  renderVLANTable();
+  renderSubnetSummary();
+}
+
+// ══════════════════════════════════════
+// VLANs
+// ══════════════════════════════════════
+function renderVLANTable() {
+  const tbody = document.getElementById('vlan-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  state.vlans.forEach((v, i) => {
+    const tr = document.createElement('tr');
+    tr.className = 'vlan-row';
+    tr.innerHTML = `
+      <td><span class="badge badge-blue">${v.id}</span></td>
+      <td><input type="text" value="${v.nombre}" oninput="state.vlans[${i}].nombre=this.value;"></td>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--accent);">10.1.${v.id}.0/24</td>
+      <td><input type="text" value="${v.dscp}" oninput="state.vlans[${i}].dscp=this.value;"></td>
+      <td><button class="btn btn-danger btn-sm" onclick="eliminarVLAN(${i})">&#x2715;</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function agregarVLAN() {
+  const lastId = state.vlans[state.vlans.length-1]?.id || 60;
+  state.vlans.push({ id: lastId + 10, nombre: `Nueva VLAN`, dscp: 'BE (0)', color: 'gray' });
+  renderVLANTable();
+  toast('VLAN agregada', 'success');
+}
+
+function eliminarVLAN(i) {
+  if (state.vlans.length <= 1) { toast('Debe haber al menos una VLAN', 'error'); return; }
+  state.vlans.splice(i, 1);
+  renderVLANTable();
+  toast('VLAN eliminada', 'info');
+}
+
+// ══════════════════════════════════════
+// SUBNET SUMMARY
+// ══════════════════════════════════════
+function renderSubnetSummary() {
+  const tbody = document.getElementById('subnet-summary-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  state.sedes.forEach((s, i) => {
+    const o = s.octet;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${s.nombre}</strong></td>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--blue);">10.${o}.20.0/24</td>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--green);">10.${o}.30.0/24</td>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--orange);">10.${o}.40.0/24</td>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--purple);">10.${o}.50.0/24</td>
+      <td><span class="badge badge-cyan">${s.usuarios.toLocaleString()}</span></td>
+      <td><span class="badge badge-green">&#x2713; Activa</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ══════════════════════════════════════
+// IP CALCULATOR
+// ══════════════════════════════════════
+function calcularIP() {
+  const card = document.getElementById('ip-calc-card');
+  card.style.display = card.style.display === 'none' ? 'block' : 'none';
+  if (card.style.display === 'block') card.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function calcSubnet() {
+  const raw = document.getElementById('cidr-input').value.trim();
+  const match = raw.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)\/(\d+)$/);
+  if (!match) { ['calc-red','calc-mask','calc-gw','calc-bc','calc-hosts','calc-range'].forEach(id => document.getElementById(id).textContent = '—'); return; }
+  const [,a,b,c,d,prefix] = match.map(Number);
+  const bits = 32 - prefix;
+  const total = Math.pow(2, bits);
+  const hosts = total - 2;
+  const maskBits = ~((1 << bits) - 1) >>> 0;
+  const mask = [(maskBits>>>24)&255,(maskBits>>>16)&255,(maskBits>>>8)&255,maskBits&255].join('.');
+  const ipNum = ((a<<24)|(b<<16)|(c<<8)|d) >>> 0;
+  const netNum = (ipNum & maskBits) >>> 0;
+  const bcNum = (netNum | (total - 1)) >>> 0;
+  const net = [(netNum>>>24)&255,(netNum>>>16)&255,(netNum>>>8)&255,netNum&255].join('.');
+  const bc = [(bcNum>>>24)&255,(bcNum>>>16)&255,(bcNum>>>8)&255,bcNum&255].join('.');
+  const firstNum = netNum + 1;
+  const lastNum = bcNum - 1;
+  const first = [(firstNum>>>24)&255,(firstNum>>>16)&255,(firstNum>>>8)&255,firstNum&255].join('.');
+  const last = [(lastNum>>>24)&255,(lastNum>>>16)&255,(lastNum>>>8)&255,lastNum&255].join('.');
+  const gwArr = [(firstNum>>>24)&255,(firstNum>>>16)&255,(firstNum>>>8)&255,((firstNum&255)+1)];
+  const gw = hosts > 1 ? last : first;
+  document.getElementById('calc-red').textContent = net + '/' + prefix;
+  document.getElementById('calc-mask').textContent = mask;
+  document.getElementById('calc-gw').textContent = gw;
+  document.getElementById('calc-bc').textContent = bc;
+  document.getElementById('calc-hosts').textContent = hosts > 0 ? hosts.toLocaleString() : '0';
+  document.getElementById('calc-range').textContent = hosts > 0 ? `${first} — ${last}` : '—';
+}
+
+// ══════════════════════════════════════
+// DEVICES
+// ══════════════════════════════════════
+function renderDeviceTypes() {
+  const grid = document.getElementById('device-type-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  DEVICE_TYPES.forEach(dt => {
+    const card = document.createElement('div');
+    card.className = 'device-card' + (dt.id === state.currentDeviceType ? ' active' : '');
+    card.innerHTML = `<div class="d-icon">${dt.icon}</div><div class="d-name">${dt.name}</div>`;
+    card.onclick = () => { state.currentDeviceType = dt.id; renderDeviceTypes(); };
+    grid.appendChild(card);
+  });
+}
+
+function renderVendorList() {
+  const list = document.getElementById('vendor-list');
+  if (!list) return;
+  list.innerHTML = '';
+  VENDORS.forEach(v => {
+    const item = document.createElement('div');
+    item.className = 'vendor-item' + (v.id === state.currentVendor ? ' active' : '');
+    item.innerHTML = `
+      <div class="vendor-dot" style="background:${v.color};"></div>
+      <div class="vendor-name">${v.name}</div>
+      <div class="vendor-model">${v.model}</div>
+    `;
+    item.onclick = () => {
+      state.currentVendor = v.id;
+      document.getElementById('dev-model').value = v.model;
+      document.getElementById('cli-title').textContent = `Configuración CLI — ${v.name} ${v.model}`;
+      document.getElementById('cli-lang').textContent = v.lang;
+      renderVendorList();
+      updateCLI();
+    };
+    list.appendChild(item);
+  });
+}
+
+function updateCLI() {
+  const output = document.getElementById('cli-output');
+  if (!output) return;
+  const text = getCLI(state.currentVendor);
+  output.innerHTML = text.split('\n').map(line => {
+    const trimmed = line.trimStart();
+    if (trimmed.startsWith('#') || trimmed.startsWith('!')) {
+      return `<div class="code-line code-comment">${escHtml(line)}</div>`;
+    }
+    if (/^(set|config|hostname|interface|router|vlan|ip |no |enable|policy|class|end|quit|next)/.test(trimmed)) {
+      const parts = line.replace(/(".*?")/g, '<span class="code-string">$1</span>');
+      return `<div class="code-line"><span class="code-keyword">${escHtml(line.split(' ')[0])}</span>${escHtml(line.slice(line.split(' ')[0].length))}</div>`;
+    }
+    return `<div class="code-line">${escHtml(line)}</div>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyCLI() {
+  const text = getCLI(state.currentVendor);
+  navigator.clipboard.writeText(text).then(() => toast('CLI copiada al portapapeles &#x2713;', 'success')).catch(() => toast('Error al copiar', 'error'));
+}
+
+function downloadCLI() {
+  const text = getCLI(state.currentVendor);
+  const name = `${state.currentVendor}-${state.currentDeviceType}-config.txt`;
+  downloadText(text, name);
+  toast('Descargando ' + name, 'info');
+}
+
+function exportExactConfig() {
+  const devName = document.getElementById('dev-name')?.value || 'DEVICE';
+  const ts = new Date().toISOString().split('T')[0];
+  let content = `================================================================================\nCONFIGURACIÓN DE DISPOSITIVO DE RED — UCOMPENSAR NetConfig Pro\n================================================================================\nFecha: ${ts}\nDispositivo: ${devName}\nModelo: ${document.getElementById('dev-model')?.value || ''}\nFabricante: ${state.currentVendor.toUpperCase()}\nTipo: ${state.currentDeviceType.toUpperCase()}\nUbicación: ${document.getElementById('dev-location')?.value || ''}\n================================================================================\nCOMANDOS DE CONFIGURACIÓN\n================================================================================\n\n${getCLI(state.currentVendor)}\n\n================================================================================\nFIN DE LA CONFIGURACIÓN\n================================================================================`;
+  const name = `${state.currentVendor}-${devName}-${ts}.conf`;
+  downloadText(content, name);
+  toast('Exportado: ' + name, 'success');
+}
+
+// ══════════════════════════════════════
+// TOPOLOGY
+// ══════════════════════════════════════
+const TOPO_NODES = [
+  { id:'internet', label:'Internet', sub:'ISP', icon:'&#x1F30D;', x:50, y:10, color:'#8b949e', bg:'var(--bg4)', status:'online', ip:'—', model:'—' },
+  { id:'hub1', label:'HUB-01', sub:'Cisco ASR1K', icon:'&#x1F500;', x:28, y:38, color:'#00d4aa', bg:'rgba(0,212,170,0.15)', status:'online', ip:'10.1.254.1', model:'Cisco ASR 1000' },
+  { id:'hub2', label:'HUB-02', sub:'Cisco ASR1K', icon:'&#x1F500;', x:72, y:38, color:'#58a6ff', bg:'rgba(88,166,255,0.15)', status:'online', ip:'10.2.254.1', model:'Cisco ASR 1000' },
+  { id:'fw1', label:'FW-01', sub:'Fortinet 60F', icon:'&#x1F6E1;', x:18, y:62, color:'#f0883e', bg:'rgba(240,136,62,0.15)', status:'online', ip:'10.1.50.1', model:'FortiGate 60F' },
+  { id:'fw2', label:'FW-02', sub:'Fortinet 60F', icon:'&#x1F6E1;', x:82, y:62, color:'#f0883e', bg:'rgba(240,136,62,0.15)', status:'online', ip:'10.2.50.1', model:'FortiGate 60F' },
+  { id:'sw-1a', label:'SW-1A', sub:'Sede 1-A', icon:'&#x1F50C;', x:10, y:84, color:'#bc8cff', bg:'rgba(188,140,255,0.15)', status:'warn', ip:'10.1.50.10', model:'Arista 7050' },
+  { id:'sw-1b', label:'SW-1B', sub:'Sede 1-B', icon:'&#x1F50C;', x:30, y:84, color:'#bc8cff', bg:'rgba(188,140,255,0.15)', status:'online', ip:'10.2.50.10', model:'Arista 7050' },
+  { id:'sw-2', label:'SW-2', sub:'Sede 2', icon:'&#x1F50C;', x:65, y:84, color:'#bc8cff', bg:'rgba(188,140,255,0.15)', status:'online', ip:'10.3.50.10', model:'HP Aruba 8400' },
+  { id:'sw-3', label:'SW-3', sub:'Sede 3', icon:'&#x1F50C;', x:82, y:84, color:'#bc8cff', bg:'rgba(188,140,255,0.15)', status:'online', ip:'10.4.50.10', model:'HP Aruba 8400' },
+];
+
+const TOPO_EDGES = [
+  { from:'internet', to:'hub1', color:'#3d444d', dashed:false },
+  { from:'internet', to:'hub2', color:'#3d444d', dashed:false },
+  { from:'hub1', to:'hub2', color:'#00d4aa', dashed:true },
+  { from:'hub1', to:'fw1', color:'#00d4aa', dashed:false },
+  { from:'hub2', to:'fw2', color:'#58a6ff', dashed:false },
+  { from:'fw1', to:'sw-1a', color:'#bc8cff', dashed:false },
+  { from:'fw1', to:'sw-1b', color:'#bc8cff', dashed:false },
+  { from:'fw2', to:'sw-2', color:'#bc8cff', dashed:false },
+  { from:'fw2', to:'sw-3', color:'#bc8cff', dashed:false },
+];
+
+function renderTopology() {
+  const canvas = document.getElementById('topo-canvas');
+  if (!canvas) return;
+  // Remove old nodes
+  canvas.querySelectorAll('.topo-node').forEach(n => n.remove());
+  const svg = document.getElementById('topo-svg');
+  svg.innerHTML = '';
+  const W = canvas.offsetWidth || 800;
+  const H = canvas.offsetHeight || 380;
+
+  const getPos = n => ({ x: n.x/100 * W, y: n.y/100 * H });
+
+  // Draw edges first (SVG)
+  TOPO_EDGES.forEach(e => {
+    const from = TOPO_NODES.find(n => n.id === e.from);
+    const to = TOPO_NODES.find(n => n.id === e.to);
+    if (!from || !to) return;
+    const fp = getPos(from), tp = getPos(to);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', fp.x); line.setAttribute('y1', fp.y);
+    line.setAttribute('x2', tp.x); line.setAttribute('y2', tp.y);
+    line.setAttribute('stroke', e.color);
+    line.setAttribute('stroke-opacity', '0.6');
+    if (e.dashed) {
+      line.setAttribute('stroke-dasharray','6 4');
+      line.setAttribute('stroke-width','2');
+      line.style.animation = 'dash 10s linear infinite';
+    } else {
+      line.setAttribute('stroke-width','2');
+    }
+    svg.appendChild(line);
+  });
+
+  // Draw nodes
+  TOPO_NODES.forEach(n => {
+    const pos = getPos(n);
+    const div = document.createElement('div');
+    div.className = 'topo-node';
+    div.style.left = (pos.x - 26) + 'px';
+    div.style.top = (pos.y - 26) + 'px';
+    div.innerHTML = `
+      <div class="topo-box ${n.status}" style="background:${n.bg};border-color:${n.color};">${n.icon}</div>
+      <div class="topo-label">${n.label}</div>
+      <div class="topo-sublabel">${n.sub}</div>
+    `;
+    div.onclick = () => showNodeDetail(n);
+    canvas.appendChild(div);
+  });
+}
+
+function showNodeDetail(n) {
+  const panel = document.getElementById('node-detail');
+  document.getElementById('nd-icon').textContent = n.icon;
+  document.getElementById('nd-name').textContent = n.label;
+  document.getElementById('nd-desc').textContent = n.sub;
+  document.getElementById('nd-ip').textContent = n.ip;
+  document.getElementById('nd-model').textContent = n.model;
+  document.getElementById('nd-status').textContent = n.status === 'online' ? '&#x1F7E2; Online' : n.status === 'warn' ? '&#x1F7E1; Degradado' : '&#x1F534; Offline';
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function setTopoView(view, btn) {
+  document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  toast(`Vista ${view === 'logical' ? 'lógica' : 'física'} activada`, 'info');
+}
+
+// ══════════════════════════════════════
+// SECURITY
+// ══════════════════════════════════════
+function toggleAccordion(trigger) {
+  const item = trigger.closest('.accordion-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+function exportSecConfig() {
+  const content = `! ACL SEGURIDAD — UCOMPENSAR\n! Generado: ${new Date().toLocaleDateString('es-CO')}\n\nip access-list extended MGMT-ACCESS\n permit tcp 10.1.50.0 0.0.0.255 any eq 22\n permit tcp 10.1.50.0 0.0.0.255 any eq 443\n deny ip any any log\n!\nip access-list extended ANTI-SPOOF\n deny ip 127.0.0.0 0.255.255.255 any\n deny ip 10.0.0.0 0.255.255.255 any\n permit ip any any\n!\nip access-list extended BLOCK-TELNET\n deny tcp any any eq 23\n permit ip any any`;
+  downloadText(content, 'acls-ucompensar.conf');
+  toast('ACLs exportadas correctamente', 'success');
+}
+
+// ══════════════════════════════════════
+// REPORTS
+// ══════════════════════════════════════
+function generarReporteCompleto() {
+  const ts = new Date().toLocaleString('es-CO');
+  const totalUsuarios = state.sedes.reduce((s,x) => s + x.usuarios, 0);
+  let txt = `================================================================================\nREPORTE COMPLETO — UCOMPENSAR NetConfig Pro\nGenerado: ${ts}\n================================================================================\n\n`;
+  txt += `1. RESUMEN EJECUTIVO\n─────────────────────\nTotal usuarios: ${totalUsuarios.toLocaleString()}\nSedes: ${state.sedes.length}\nVLANs: ${state.vlans.length}\nDispositivos: 20\n\n`;
+  txt += `2. SEDES\n─────────────────────\n`;
+  state.sedes.forEach(s => { txt += `• ${s.nombre}: ${s.usuarios} usuarios — 10.${s.octet}.x.0/24\n`; });
+  txt += `\n3. PLAN DE VLANs\n─────────────────────\n`;
+  state.vlans.forEach(v => { txt += `• VLAN ${v.id} — ${v.nombre} — DSCP: ${v.dscp}\n`; });
+  txt += `\n4. CONFIGURACIÓN CLI (${state.currentVendor.toUpperCase()})\n─────────────────────\n${getCLI(state.currentVendor)}\n\n================================================================================\nFIN DEL REPORTE\n================================================================================`;
+  downloadText(txt, `reporte-ucompensar-${new Date().toISOString().split('T')[0]}.txt`);
+  toast('Reporte completo generado y descargado', 'success');
+}
+
+// ══════════════════════════════════════
+// PROJECT
+// ══════════════════════════════════════
+function saveProject() {
+  const data = JSON.stringify({ sedes: state.sedes, vlans: state.vlans, vendor: state.currentVendor, deviceType: state.currentDeviceType }, null, 2);
+  try {
+    sessionStorage.setItem('ucompensar_project', data);
+    toast('Proyecto guardado en sesión', 'success');
+  } catch(e) { toast('Error al guardar', 'error'); }
+}
+
+function exportProject() {
+  const data = JSON.stringify({ sedes: state.sedes, vlans: state.vlans, vendor: state.currentVendor, deviceType: state.currentDeviceType }, null, 2);
+  downloadText(data, `proyecto-ucompensar-${new Date().toISOString().split('T')[0]}.json`);
+  toast('Proyecto exportado como JSON', 'success');
+}
+
+function importProject() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const proj = JSON.parse(ev.target.result);
+        if (proj.sedes) state.sedes = proj.sedes;
+        if (proj.vlans) state.vlans = proj.vlans;
+        if (proj.vendor) state.currentVendor = proj.vendor;
+        renderSedes();
+        renderVLANTable();
+        renderSubnetSummary();
+        renderVendorList();
+        renderDeviceTypes();
+        updateCLI();
+        actualizarTabsBadge();
+        toast('Proyecto importado correctamente', 'success');
+      } catch(err) { toast('Error al leer el archivo JSON', 'error'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function exportIPPlan() {
+  const data = { sedes: state.sedes, vlans: state.vlans, generado: new Date().toISOString() };
+  downloadText(JSON.stringify(data, null, 2), 'ip-plan-ucompensar.json');
+  toast('Plan IP exportado como JSON', 'success');
+}
+
+function exportTopo() {
+  toast('Exportando diagrama...', 'info');
+  setTimeout(() => toast('Diagrama exportado (SVG)', 'success'), 800);
+}
+
+function generateIPPlan() {
+  renderSubnetSummary();
+  toast('Plan de IP generado y actualizado &#x2713;', 'success');
+}
+
+function refreshDashboard() {
+  actualizarTotal();
+  toast('Dashboard actualizado', 'info');
+}
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+function downloadText(text, filename) {
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(text);
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// ══════════════════════════════════════
+// TOASTS
+// ══════════════════════════════════════
+function toast(msg, type = 'info') {
+  const icons = { success:'&#x2713;', error:'&#x2715;', info:'ℹ', warn:'&#x26A0;' };
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.style.position = 'relative';
+  el.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ'}</span><span class="toast-text">${msg}</span><button class="toast-close" onclick="removeToast(this.parentElement)">&#x2715;</button><div class="toast-bar"></div>`;
+  container.appendChild(el);
+  setTimeout(() => removeToast(el), 3200);
+}
+
+function removeToast(el) {
+  if (!el || !el.parentElement) return;
+  el.classList.add('removing');
+  setTimeout(() => el.remove(), 300);
+}
+
+// ══════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ══════════════════════════════════════
+// NODOS SIDEBAR — configuración por sede
+// ══════════════════════════════════════
+let nodoActual = null;
+
+const NODOS_CONFIG = {
+  sede1: {
+    icon: '&#x1F3E2;',
+    nombre: 'Sede 1 — Hub Principal',
+    subtitulo: 'Cisco ASR 1000 · Sede 1-A · 530 usuarios',
+    status: 'warn',
+    statusLabel: '&#x26A0; Degradado — alta latencia',
+    datos: {
+      'IP Gestion':      '10.1.254.1',
+      'IP WAN':          '203.0.113.1 / 24',
+      'Gateway WAN':     '203.0.113.254',
+      'Loopback':        '10.1.254.254 / 32',
+      'Router-ID OSPF':  '10.1.254.254',
+      'Modelo':          'Cisco ASR 1000',
+      'OS':              'IOS-XE 17.03.04',
+      'Usuarios':        '530',
+      'Latencia':        '18 ms \u26a0',
+      'Uptime':          '47 dias',
+      'Utilizacion BW':  '68%',
+    },
+    vlans: [
+      { id:20, nombre:'Datos',    subred:'10.1.20.0/24', gw:'10.1.20.254', estado:'\u2713' },
+      { id:30, nombre:'Voz',      subred:'10.1.30.0/24', gw:'10.1.30.254', estado:'\u26a0' },
+      { id:40, nombre:'CCTV',     subred:'10.1.40.0/24', gw:'10.1.40.254', estado:'\u2713' },
+      { id:50, nombre:'Gestion',  subred:'10.1.50.0/24', gw:'10.1.50.254', estado:'\u2713' },
+      { id:60, nombre:'Invitados',subred:'10.1.60.0/24', gw:'10.1.60.254', estado:'\u2713' },
+    ],
+    cli: `!\n! SEDE-1 — CISCO IOS-XE\nhostname SEDE1-HUB-01\nip domain-name ucompensar.edu.co\n!\ninterface GigabitEthernet0/0/0\n description WAN-ISP\n ip address 203.0.113.1 255.255.255.0\n no shutdown\n!\ninterface GigabitEthernet0/0/1\n description LAN-GESTION\n ip address 10.1.254.1 255.255.255.0\n no shutdown\n!\ninterface Loopback0\n ip address 10.1.254.254 255.255.255.255\n!\nvlan 20\n name DATOS\nvlan 30\n name VOZ\nvlan 40\n name CCTV\nvlan 50\n name GESTION\nvlan 60\n name INVITADOS\n!\ninterface Vlan20\n ip address 10.1.20.254 255.255.255.0\ninterface Vlan30\n ip address 10.1.30.254 255.255.255.0\ninterface Vlan40\n ip address 10.1.40.254 255.255.255.0\ninterface Vlan50\n ip address 10.1.50.254 255.255.255.0\n!\nrouter ospf 65000\n router-id 10.1.254.254\n network 10.1.0.0 0.0.255.255 area 0\n!\nip route 0.0.0.0 0.0.0.0 203.0.113.254\n!\nno cdp run\nip ssh version 2`
+  },
+
+  sede2: {
+    icon: '&#x1F3E2;',
+    nombre: 'Sede 2 — Hub Secundario',
+    subtitulo: 'Cisco ASR 1000 · Campus principal 2 · 1240 usuarios',
+    status: 'online',
+    statusLabel: '&#x1F7E2; Online',
+    datos: {
+      'IP Gestion':      '10.2.254.1',
+      'IP WAN':          '203.0.114.1 / 24',
+      'Gateway WAN':     '203.0.114.254',
+      'Loopback':        '10.2.254.254 / 32',
+      'Router-ID OSPF':  '10.2.254.254',
+      'Modelo':          'Cisco ASR 1000',
+      'OS':              'IOS-XE 17.03.04',
+      'Usuarios':        '1.240',
+      'Latencia':        '3 ms',
+      'Uptime':          '47 dias',
+      'Utilizacion BW':  '89%',
+    },
+    vlans: [
+      { id:20, nombre:'Datos',    subred:'10.2.20.0/24', gw:'10.2.20.254', estado:'\u2713' },
+      { id:30, nombre:'Voz',      subred:'10.2.30.0/24', gw:'10.2.30.254', estado:'\u2713' },
+      { id:40, nombre:'CCTV',     subred:'10.2.40.0/24', gw:'10.2.40.254', estado:'\u2713' },
+      { id:50, nombre:'Gestion',  subred:'10.2.50.0/24', gw:'10.2.50.254', estado:'\u2713' },
+      { id:60, nombre:'Invitados',subred:'10.2.60.0/24', gw:'10.2.60.254', estado:'\u2713' },
+    ],
+    cli: `!\n! SEDE-2 — CISCO IOS-XE\nhostname SEDE2-HUB-02\nip domain-name ucompensar.edu.co\n!\ninterface GigabitEthernet0/0/0\n description WAN-ISP\n ip address 203.0.114.1 255.255.255.0\n no shutdown\n!\ninterface GigabitEthernet0/0/1\n description LAN-GESTION\n ip address 10.2.254.1 255.255.255.0\n no shutdown\n!\ninterface Loopback0\n ip address 10.2.254.254 255.255.255.255\n!\nvlan 20\n name DATOS\nvlan 30\n name VOZ\nvlan 40\n name CCTV\nvlan 50\n name GESTION\nvlan 60\n name INVITADOS\n!\ninterface Vlan20\n ip address 10.2.20.254 255.255.255.0\ninterface Vlan30\n ip address 10.2.30.254 255.255.255.0\ninterface Vlan40\n ip address 10.2.40.254 255.255.255.0\n!\nrouter ospf 65000\n router-id 10.2.254.254\n network 10.2.0.0 0.0.255.255 area 0\n!\nip route 0.0.0.0 0.0.0.0 203.0.114.254\n!\nno cdp run\nip ssh version 2`
+  },
+
+  sede3: {
+    icon: '&#x1F3E2;',
+    nombre: 'Sede 3 — Rama',
+    subtitulo: 'HP Aruba 8400 · Enlace Hub 2 · 210 usuarios',
+    status: 'online',
+    statusLabel: '&#x1F7E2; Online',
+    datos: {
+      'IP Gestion':      '10.3.50.10',
+      'IP Uplink':       '10.3.254.1 / 24',
+      'Gateway':         '10.2.254.1',
+      'Modelo':          'HP Aruba 8400',
+      'OS':              'AOS-CX 10.08',
+      'Usuarios':        '210',
+      'Latencia al Hub': '5 ms',
+      'Uptime':          '30 dias',
+      'Utilizacion BW':  '31%',
+      'VLANs activas':   '5',
+    },
+    vlans: [
+      { id:20, nombre:'Datos',    subred:'10.3.20.0/24', gw:'10.3.20.254', estado:'\u2713' },
+      { id:30, nombre:'Voz',      subred:'10.3.30.0/24', gw:'10.3.30.254', estado:'\u2713' },
+      { id:40, nombre:'CCTV',     subred:'10.3.40.0/24', gw:'10.3.40.254', estado:'\u2713' },
+      { id:50, nombre:'Gestion',  subred:'10.3.50.0/24', gw:'10.3.50.254', estado:'\u2713' },
+      { id:60, nombre:'Invitados',subred:'10.3.60.0/24', gw:'10.3.60.254', estado:'\u2713' },
+    ],
+    cli: `!\n! SEDE-3 — HP ARUBA AOS-CX\nhostname SEDE3-SW-01\n!\ninterface 1/1/1\n description UPLINK-HUB-02\n ip address 10.3.254.1/24\n no shutdown\n!\ninterface loopback 0\n ip address 10.3.254.254/32\n!\nvlan 20\n name DATOS\nvlan 30\n name VOZ\nvlan 40\n name CCTV\nvlan 50\n name GESTION\nvlan 60\n name INVITADOS\n!\ninterface vlan 20\n ip address 10.3.20.254/24\ninterface vlan 30\n ip address 10.3.30.254/24\ninterface vlan 40\n ip address 10.3.40.254/24\n!\nrouter ospf\n router-id 10.3.254.254\n area 0.0.0.0\n network 10.3.0.0 0.0.255.255\n!\nip route 0.0.0.0/0 10.2.254.1`
+  },
+
+  sede4: {
+    icon: '&#x1F3E2;',
+    nombre: 'Sede 4 — Rama',
+    subtitulo: 'HP Aruba 8400 · Enlace Hub 1 · 300 usuarios',
+    status: 'online',
+    statusLabel: '&#x1F7E2; Online',
+    datos: {
+      'IP Gestion':      '10.4.50.10',
+      'IP Uplink':       '10.4.254.1 / 24',
+      'Gateway':         '10.1.254.1',
+      'Modelo':          'HP Aruba 8400',
+      'OS':              'AOS-CX 10.08',
+      'Usuarios':        '300',
+      'Latencia al Hub': '5 ms',
+      'Uptime':          '47 dias',
+      'Utilizacion BW':  '22%',
+      'VLANs activas':   '5',
+    },
+    vlans: [
+      { id:20, nombre:'Datos',    subred:'10.4.20.0/24', gw:'10.4.20.254', estado:'\u2713' },
+      { id:30, nombre:'Voz',      subred:'10.4.30.0/24', gw:'10.4.30.254', estado:'\u2713' },
+      { id:40, nombre:'CCTV',     subred:'10.4.40.0/24', gw:'10.4.40.254', estado:'\u2713' },
+      { id:50, nombre:'Gestion',  subred:'10.4.50.0/24', gw:'10.4.50.254', estado:'\u2713' },
+      { id:60, nombre:'Invitados',subred:'10.4.60.0/24', gw:'10.4.60.254', estado:'\u2713' },
+    ],
+    cli: `!\n! SEDE-4 — HP ARUBA AOS-CX\nhostname SEDE4-SW-01\n!\ninterface 1/1/1\n description UPLINK-HUB-01\n ip address 10.4.254.1/24\n no shutdown\n!\ninterface loopback 0\n ip address 10.4.254.254/32\n!\nvlan 20\n name DATOS\nvlan 30\n name VOZ\nvlan 40\n name CCTV\nvlan 50\n name GESTION\nvlan 60\n name INVITADOS\n!\ninterface vlan 20\n ip address 10.4.20.254/24\ninterface vlan 30\n ip address 10.4.30.254/24\ninterface vlan 40\n ip address 10.4.40.254/24\n!\nrouter ospf\n router-id 10.4.254.254\n area 0.0.0.0\n network 10.4.0.0 0.0.255.255\n!\nip route 0.0.0.0/0 10.1.254.1`
+  }
+};
+
+
+function abrirNodo(id) {
+  const n = NODOS_CONFIG[id];
+  if (!n) return;
+  nodoActual = n;
+
+  // Resaltar item activo en sidebar
+  document.querySelectorAll('.sidebar-item').forEach(i => {
+    if (i.id === 'sb-' + id) i.classList.add('active');
+    else if (i.id && i.id.startsWith('sb-')) i.classList.remove('active');
+  });
+
+  // Cabecera del modal
+  document.getElementById('nodo-modal-icon').textContent = n.icon;
+  document.getElementById('nodo-modal-title').textContent = n.nombre;
+  document.getElementById('nodo-modal-subtitle').textContent = n.subtitulo;
+  const badgeColor = n.status === 'online' ? 'badge-green' : n.status === 'warn' ? 'badge-orange' : 'badge-red';
+  document.getElementById('nodo-modal-badge').innerHTML = `<span class="badge ${badgeColor}">${n.statusLabel}</span>`;
+
+  // Cuerpo del modal
+  let html = `<div style="padding:20px 24px 0;">`;
+
+  // Tabs internas
+  html += `<div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;">
+    <button class="nodo-tab-btn active" onclick="nodoTab('info',this)" style="padding:8px 18px;background:none;border:none;border-bottom:2px solid var(--accent);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);">&#x1F4CB; Info General</button>
+    <button class="nodo-tab-btn" onclick="nodoTab('vlans',this)" style="padding:8px 18px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);">&#x1F3F7; VLANs</button>
+    <button class="nodo-tab-btn" onclick="nodoTab('cli',this)" style="padding:8px 18px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);">&#x1F527; CLI</button>
+  </div>`;
+
+  // Pestaña Info General
+  html += `<div id="nodo-tab-info" class="nodo-tab-content">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">`;
+  Object.entries(n.datos).forEach(([k, v]) => {
+    const isWarn = v.includes('&#x26A0;');
+    html += `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">${k}</div>
+      <div style="font-family:var(--mono);font-size:13px;color:${isWarn ? 'var(--orange)' : 'var(--accent)'};">${v}</div>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  // Pestaña VLANs
+  html += `<div id="nodo-tab-vlans" class="nodo-tab-content" style="display:none;">
+    <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="background:var(--bg3);">
+          <th style="padding:10px 14px;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);">VLAN ID</th>
+          <th style="padding:10px 14px;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);">Nombre</th>
+          <th style="padding:10px 14px;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);">Subred</th>
+          <th style="padding:10px 14px;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);">Gateway</th>
+          <th style="padding:10px 14px;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);">Estado</th>
+        </tr></thead>
+        <tbody>`;
+  n.vlans.forEach(v => {
+    const estadoClass = v.estado === '&#x2713;' ? 'badge-green' : 'badge-orange';
+    html += `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:10px 14px;"><span class="badge badge-blue">${v.id}</span></td>
+      <td style="padding:10px 14px;color:var(--text);">${v.nombre}</td>
+      <td style="padding:10px 14px;font-family:var(--mono);font-size:12px;color:var(--accent);">${v.subred}</td>
+      <td style="padding:10px 14px;font-family:var(--mono);font-size:12px;color:var(--text2);">${v.gw}</td>
+      <td style="padding:10px 14px;"><span class="badge ${estadoClass}">${v.estado === '&#x2713;' ? '&#x2713; OK' : '&#x26A0; Revisar'}</span></td>
+    </tr>`;
+  });
+  html += `</tbody></table></div></div>`;
+
+  // Pestaña CLI
+  const cliLines = n.cli.split('\n').map(line => {
+    const t = line.trimStart();
+    if (t.startsWith('!') || t.startsWith('#')) return `<div style="color:var(--text3);white-space:pre;">${escHtml(line)}</div>`;
+    const kws = ['hostname','interface','ip address','no shutdown','vlan','router ospf','network','ip route','no cdp','ip ssh'];
+    const isKw = kws.some(k => t.startsWith(k));
+    if (isKw) return `<div style="white-space:pre;"><span style="color:var(--blue);">${escHtml(line.split(' ')[0])}</span><span style="color:var(--text2);">${escHtml(line.slice(line.split(' ')[0].length))}</span></div>`;
+    return `<div style="color:var(--text2);white-space:pre;">${escHtml(line)}</div>`;
+  }).join('');
+
+  html += `<div id="nodo-tab-cli" class="nodo-tab-content" style="display:none;">
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg3);border-bottom:1px solid var(--border);">
+        <span style="font-size:11px;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:1px;">${n.subtitulo.split('·')[0].trim().toUpperCase()}</span>
+        <button class="btn btn-ghost btn-sm" onclick="copiarConfigNodo()">&#x1F4CB; Copiar</button>
+      </div>
+      <div style="padding:16px;overflow-x:auto;max-height:300px;overflow-y:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;">${cliLines}</div>
+    </div>
+  </div>`;
+
+  html += `</div>`; // cierre padding wrapper
+
+  document.getElementById('nodo-modal-body').innerHTML = html;
+  document.getElementById('nodo-modal-overlay').classList.add('open');
+}
+
+function nodoTab(tab, btn) {
+  document.querySelectorAll('.nodo-tab-content').forEach(el => el.style.display = 'none');
+  document.getElementById('nodo-tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.nodo-tab-btn').forEach(b => {
+    b.style.borderBottomColor = 'transparent';
+    b.style.color = 'var(--text2)';
+  });
+  btn.style.borderBottomColor = 'var(--accent)';
+  btn.style.color = 'var(--accent)';
+}
+
+function cerrarNodoModal(e) {
+  if (e.target === document.getElementById('nodo-modal-overlay')) {
+    document.getElementById('nodo-modal-overlay').classList.remove('open');
+  }
+}
+
+function copiarConfigNodo() {
+  if (!nodoActual) return;
+  navigator.clipboard.writeText(nodoActual.cli)
+    .then(() => toast('CLI copiada al portapapeles &#x2713;', 'success'))
+    .catch(() => toast('Error al copiar', 'error'));
+}
+
+function descargarConfigNodo() {
+  if (!nodoActual) return;
+  const nombre = nodoActual.nombre.split('—')[0].trim().replace(/\s+/g,'-').toLowerCase();
+  downloadText(nodoActual.cli, `${nombre}-config.conf`);
+  toast('Configuración descargada: ' + nombre + '-config.conf', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderSedes();
+  renderVLANTable();
+  renderSubnetSummary();
+  renderDeviceTypes();
+  renderVendorList();
+  updateCLI();
+  actualizarTabsBadge();
+  setTimeout(renderTopology, 300);
+  // Tag toggles
+  document.querySelectorAll('.tag').forEach(t => t.addEventListener('click', () => t.classList.toggle('active')));
+});
+</script>
+</body>
+</html>
